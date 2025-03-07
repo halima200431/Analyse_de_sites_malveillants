@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détecteur de Sites Malveillants</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Détecteur de Sites Malveillants</h1>
+    <input type="text" id="url" placeholder="Entrez une URL">
+    <button onclick="scanUrl()">Vérifier</button>
+    <div id="result"></div>
+
+    <script>
+        async function scanUrl() {
+            const url = document.getElementById('url').value;
+            if (!url) {
+                alert("Veuillez entrer une URL !");
+                return;
+            }
+
+            const response = await fetch('http://127.0.0.1:5000/scan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: url })
+            });
+
+            const data = await response.json();
+            const resultDiv = document.getElementById('result');
+
+            if (data.risk_level === "Malicious") {
+                resultDiv.textContent = "❌ Ce site est malveillant !";
+                resultDiv.style.color = "red";
+            } else if (data.risk_level === "High Risk") {
+                resultDiv.textContent = "⚠️ Risque élevé ! Soyez prudent.";
+                resultDiv.style.color = "orange";
+            } else if (data.risk_level === "Moderate Risk") {
+                resultDiv.textContent = "⚠️ Risque modéré. Faites attention.";
+                resultDiv.style.color = "grey";
+            } else if (data.risk_level === "Low Risk") {
+                resultDiv.textContent = "⚠️ Risque faible.";
+                resultDiv.style.color = "blue";
+            } else {
+                resultDiv.textContent = "✅ Ce site semble sûr.";
+                resultDiv.style.color = "green";
+            }
+        }
+    </script>
+</body>
+</html>
