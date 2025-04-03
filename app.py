@@ -10,7 +10,7 @@ import validators
 app = Flask(__name__)
 CORS(app)  # Permettre les requêtes depuis le front-end
 
-# Clé API Google Safe Browsing (remplace par ta clé)
+# Clé API Google Safe Browsing 
 API_KEY = API_KEY = os.getenv("GOOGLE_SAFE_BROWSING_API_KEY")
 SAFE_BROWSING_URL = "https://safebrowsing.googleapis.com/v4/threatMatches:find"
 
