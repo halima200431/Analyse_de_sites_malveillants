@@ -4,27 +4,98 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Détecteur de Sites Malveillants</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 50px;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            text-align: center;
         }
-        input, button {
-            padding: 10px;
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 15px 30px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+        .container {
+            margin: 50px auto;
+            width: 90%;
+            max-width: 500px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+            color: black;
+        }
+        input {
+            width: 80%;
+            padding: 12px;
             font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 12px 25px;
+            font-size: 18px;
+            background: #ff4757;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #e84118;
         }
         #result {
             margin-top: 20px;
             font-weight: bold;
+            font-size: 20px;
+            transition: 0.5s;
+        }
+        .icon {
+            font-size: 28px;
+            margin-right: 10px;
+        }
+        .why-us {
+            margin-top: 50px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Détecteur de Sites Malveillants</h1>
-    <input type="text" id="url" placeholder="Entrez une URL">
-    <button onclick="scanUrl()">Vérifier</button>
-    <div id="result"></div>
-
+    <div class="navbar">
+        <h2>Détecteur de Sites Malveillants</h2>
+        <div>
+            <a href="#">Accueil</a>
+            <a href="#">À propos</a>
+            <a href="#">Contact</a>
+        </div>
+    </div>
+    <div class="container">
+        <h2>Analysez un site web</h2>
+        <input type="text" id="url" placeholder="Entrez une URL">
+        <button onclick="scanUrl()">Vérifier</button>
+        <div id="result"></div>
+    </div>
+    <div class="why-us">
+        <h2>Pourquoi nous ?</h2>
+        <p>Nous offrons une analyse approfondie des sites web pour détecter les menaces potentielles et assurer votre sécurité en ligne.</p>
+    </div>
     <script>
         async function scanUrl() {
             const url = document.getElementById('url').value;
@@ -41,23 +112,29 @@
 
             const data = await response.json();
             const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = "";
+
+            let icon = document.createElement("i");
+            icon.classList.add("icon");
 
             if (data.risk_level === "Malicious") {
-                resultDiv.textContent = "❌ Ce site est malveillant !";
-                resultDiv.style.color = "red";
+                icon.classList.add("fas", "fa-times-circle");
+                resultDiv.innerHTML = `<span style="color: red;">❌ Ce site est malveillant !</span>`;
             } else if (data.risk_level === "High Risk") {
-                resultDiv.textContent = "⚠️ Risque élevé ! Soyez prudent.";
-                resultDiv.style.color = "orange";
+                icon.classList.add("fas", "fa-exclamation-triangle");
+                resultDiv.innerHTML = `<span style="color: orange;">⚠️ Risque élevé ! Soyez prudent.</span>`;
             } else if (data.risk_level === "Moderate Risk") {
-                resultDiv.textContent = "⚠️ Risque modéré. Faites attention.";
-                resultDiv.style.color = "grey";
+                icon.classList.add("fas", "fa-exclamation-circle");
+                resultDiv.innerHTML = `<span style="color: grey;">⚠️ Risque modéré. Faites attention.</span>`;
             } else if (data.risk_level === "Low Risk") {
-                resultDiv.textContent = "⚠️ Risque faible.";
-                resultDiv.style.color = "blue";
+                icon.classList.add("fas", "fa-info-circle");
+                resultDiv.innerHTML = `<span style="color: blue;">⚠️ Risque faible.</span>`;
             } else {
-                resultDiv.textContent = "✅ Ce site semble sûr.";
-                resultDiv.style.color = "green";
+                icon.classList.add("fas", "fa-check-circle");
+                resultDiv.innerHTML = `<span style="color: green;">✅ Ce site semble sûr.</span>`;
             }
+
+            resultDiv.prepend(icon);
         }
     </script>
 </body>
