@@ -36,7 +36,7 @@ XSS_PATTERNS = ["<script>", "javascript:", "onload=", "onerror=", "alert("]
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(_name_)
+logger = logging.getLogger(__name__)
 
 def calculate_security_score(results):
     """Calculate overall security score (0-100%)"""
@@ -328,36 +328,9 @@ def scan_url():
         logger.error(f"Erreur lors de l'analyse: {str(e)}", exc_info=True)
         return jsonify({"error": "Une erreur est survenue lors de l'analyse"}), 500
 
-<<<<<<< HEAD
-if _name_ == '_main_':
-    app.run(host='0.0.0.0', port=5000, debug=True)
-
-
-
-    from flask import render_template
-
-@app.route('/help', methods=['GET'])
-def help_page():
-    """Affiche la page d'aide avec un formulaire."""
-    return render_template('help.html')
-
-@app.route('/submit-question', methods=['POST'])
-def submit_question():
-    """Traite la question soumise par le client."""
-    question = request.form.get('question')
-    if not question:
-        return jsonify({"error": "Aucune question fournie"}), 400
-    
-    # Vous pouvez enregistrer la question dans un fichier ou une base de données
-    logger.info(f"Question reçue : {question}")
-    
-    # Réponse de confirmation
-    return jsonify({"message": "Votre question a été envoyée avec succès !"})
-=======
 if __name__ == '__main__':
     # Verify API key is loaded
     if not API_KEY:
         logger.warning("Safe Browsing API key not configured - this feature will be disabled")
     
     app.run(host='0.0.0.0', port=5000, debug=True)
->>>>>>> 8daab7013569e9ebd31023cb184c8097037b5249

@@ -360,13 +360,13 @@
         `;
     }
     // 7. Enregistrements DNS
-findingsHTML += `
-    <div class="finding ${data.findings.dns.length ? 'warning' : 'success'}">
-        <i class="fas ${data.findings.dns.length ? 'fa-globe' : 'fa-check-circle'}"></i>
-        <strong>Enregistrements DNS:</strong>
-        ${data.findings.dns.length ? data.findings.dns.join(', ') : 'Enregistrements valides'}
-    </div>
-`;
+    findingsHTML += `
+        <div class="finding ${data.findings.dns.length ? 'warning' : 'success'}">
+            <i class="fas ${data.findings.dns.length ? 'fa-globe' : 'fa-check-circle'}"></i>
+            <strong>Enregistrements DNS:</strong>
+            ${data.findings.dns.length ? data.findings.dns.join(', ') : 'Enregistrements valides'}
+        </div>
+    `;
 
     findingsContainer.innerHTML = findingsHTML;
     document.getElementById('results').style.display = 'block';
