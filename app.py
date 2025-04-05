@@ -15,25 +15,71 @@ import urllib.parse
 from bs4 import BeautifulSoup
 from functools import wraps
 import time
-import whois
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 
-# Configuration
-API_KEY = os.getenv("GOOGLE_SAFE_BROWSING_API_KEY", "your-api-key")
+# Configuration - API key now from environment variables
+API_KEY = os.getenv("GOOGLE_SAFE_BROWSING_API_KEY")
 SAFE_BROWSING_URL = "https://safebrowsing.googleapis.com/v4/threatMatches:find"
-REQUEST_TIMEOUT = 8  # seconds
+REQUEST_TIMEOUT = 10  # seconds
 
-# Listes de détection
+# Detection lists
 SUSPICIOUS_KEYWORDS = ["free", "login", "bank", "verify", "account", "secure", "paypal"]
 SHORTENERS = ["bit.ly", "tinyurl.com", "goo.gl", "shorte.st", "adf.ly", "t.co"]
 SQL_KEYWORDS = ["select", "union", "insert", "delete", "drop", "update", "alter", "1=1"]
 XSS_PATTERNS = ["<script>", "javascript:", "onload=", "onerror=", "alert("]
 
-# Configuration du logging
+# Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+def calculate_security_score(results):
+    """Calculate overall security score (0-100%)"""
+    weights = {
+        'safe_browsing': 0.3,
+        'suspicious_patterns': 0.25,
+        'sql_injection': 0.2,
+        'xss': 0.15,
+        'ssl': 0.05,
+        'dns': 0.03,
+        'whois': 0.02
+    }
+    
+    total_score = 0
+    
+    # Safe Browsing contributes 30% (all or nothing)
+    total_score += 30 if not results['findings']['safe_browsing'] else 0
+    
+    # Suspicious patterns (max 20%)
+    suspicious_score = max(0, 20 - (results['threat_score'] * 4))
+    total_score += suspicious_score
+    
+    # SQL Injection (max 20%)
+    sql_score = 20 if not results['findings']['sql_injection'] else 0
+    total_score += sql_score
+    
+    # XSS (max 15%)
+    xss_score = 15 if not results['findings']['xss'] else 0
+    total_score += xss_score
+    
+    # SSL (max 5%)
+    ssl_score = max(0, 5 - (len(results['findings']['ssl']) * 1.25))
+    total_score += ssl_score
+    
+    # DNS (max 8%)
+    dns_score = max(0, 8 - (len(results['findings']['dns']) * 1.6))
+    total_score += dns_score
+    
+    # WHOIS (max 2%)
+    whois_score = max(0, 2 - (len(results['findings']['whois']) * 0.4))
+    total_score += whois_score
+    
+    return round(total_score, 2)
 
 def timeout_handling(max_time):
     def decorator(func):
@@ -50,8 +96,8 @@ def timeout_handling(max_time):
 
 @timeout_handling(5)
 def check_google_safe_browsing(url):
-    """Vérifie l'URL avec l'API Google Safe Browsing"""
-    if not API_KEY or API_KEY == "your-api-key":
+    """Check URL with Google Safe Browsing API"""
+    if not API_KEY:
         logger.warning("Google Safe Browsing API key not configured")
         return []
     
@@ -76,16 +122,16 @@ def check_google_safe_browsing(url):
         return []
 
 def check_suspicious_patterns(url):
-    """Détecte les motifs suspects dans l'URL"""
+    """Detect suspicious patterns in URL"""
     score = 0
     findings = []
     
-    # Vérification des raccourcisseurs d'URL
+    # URL shorteners
     if any(shortener in url.lower() for shortener in SHORTENERS):
         score += 2
         findings.append("URL raccourcie détectée")
     
-    # Mots-clés suspects
+    # Suspicious keywords
     found_keywords = [kw for kw in SUSPICIOUS_KEYWORDS if kw in url.lower()]
     if found_keywords:
         score += len(found_keywords)
@@ -94,7 +140,7 @@ def check_suspicious_patterns(url):
     return score, findings
 
 def check_sql_injection(url):
-    """Détecte les injections SQL potentielles"""
+    """Detect potential SQL injections"""
     findings = []
     parsed = urllib.parse.urlparse(url)
     params = urllib.parse.parse_qs(parsed.query)
@@ -107,7 +153,7 @@ def check_sql_injection(url):
     return findings
 
 def check_xss(url):
-    """Détecte les vulnérabilités XSS potentielles"""
+    """Detect potential XSS vulnerabilities"""
     findings = []
     parsed = urllib.parse.urlparse(url)
     params = urllib.parse.parse_qs(parsed.query)
@@ -119,9 +165,8 @@ def check_xss(url):
     
     return findings
 
-
 def check_ssl_certificate(domain):
-    """Vérifie en profondeur le certificat SSL du domaine"""
+    """Check SSL certificate in depth"""
     findings = []
     try:
         context = ssl.create_default_context()
@@ -129,17 +174,17 @@ def check_ssl_certificate(domain):
             with context.wrap_socket(sock, server_hostname=domain) as ssock:
                 cert = ssock.getpeercert()
                 
-                # Vérification de la validité
+                # Check validity
                 expire_date = datetime.strptime(cert['notAfter'], '%b %d %H:%M:%S %Y %Z')
                 if expire_date < datetime.now():
                     findings.append("Certificat SSL expiré")
                 
-                # Vérification de la correspondance du domaine
+                # Check domain match
                 common_name = next((v for k, v in cert['subject'][0] if k == 'commonName'), '')
                 if not common_name or common_name != domain:
                     findings.append(f"Nom de certificat ne correspond pas: {common_name}")
                 
-                # Vérification de la force de chiffrement
+                # Check cipher strength
                 cipher = ssock.cipher()
                 if cipher and 'RC4' in cipher[0] or 'DES' in cipher[0]:
                     findings.append(f"Chiffrement faible détecté: {cipher[0]}")
@@ -152,10 +197,10 @@ def check_ssl_certificate(domain):
     return findings
 
 def check_dns_records(domain):
-    """Analyse les enregistrements DNS pour détecter des anomalies"""
+    """Analyze DNS records for anomalies"""
     findings = []
     try:
-        # Vérification des enregistrements MX (email)
+        # MX records check
         try:
             answers = dns.resolver.resolve(domain, 'MX')
             if not answers:
@@ -163,7 +208,7 @@ def check_dns_records(domain):
         except:
             findings.append("Aucun enregistrement MX trouvé")
         
-        # Vérification des enregistrements SPF
+        # SPF records check
         try:
             answers = dns.resolver.resolve(domain, 'TXT')
             spf_found = any('v=spf1' in str(r) for r in answers)
@@ -172,7 +217,7 @@ def check_dns_records(domain):
         except:
             findings.append("Aucun enregistrement SPF trouvé")
         
-        # Vérification du DMARC
+        # DMARC check
         try:
             dns.resolver.resolve(f'_dmarc.{domain}', 'TXT')
         except:
@@ -184,12 +229,12 @@ def check_dns_records(domain):
     return findings
 
 def check_whois(domain):
-    """Analyse les informations WHOIS du domaine"""
+    """Analyze WHOIS information"""
     findings = []
     try:
         w = whois.whois(domain)
         
-        # Vérification de l'âge du domaine
+        # Domain age check
         if w.creation_date:
             if isinstance(w.creation_date, list):
                 creation_date = w.creation_date[0]
@@ -200,11 +245,11 @@ def check_whois(domain):
             if domain_age < 30:
                 findings.append(f"Domaine récent ({domain_age} jours) - risque potentiel")
         
-        # Vérification du registrant
+        # Registrant check
         if not w.name and not w.org:
             findings.append("Informations du propriétaire masquées (WHOIS privé)")
         
-        # Vérification du pays
+        # Country check
         if w.country:
             high_risk_countries = ['CN', 'RU', 'UA', 'TR', 'BR']
             if w.country in high_risk_countries:
@@ -217,7 +262,7 @@ def check_whois(domain):
 
 @app.route('/scan', methods=['POST'])
 def scan_url():
-    """Endpoint principal pour l'analyse d'URL"""
+    """Main endpoint for URL scanning"""
     if not request.is_json:
         return jsonify({"error": "Content-Type must be application/json"}), 415
     
@@ -233,11 +278,11 @@ def scan_url():
     logger.info(f"Analyse de l'URL: {url}")
     
     try:
-        # Extraction du domaine
+        # Extract domain
         parsed_url = urllib.parse.urlparse(url)
         domain = parsed_url.netloc
         
-        # Exécution des vérifications
+        # Run checks
         safe_browsing = check_google_safe_browsing(url)
         threat_score, suspicious_findings = check_suspicious_patterns(url)
         sql_findings = check_sql_injection(url)
@@ -246,21 +291,9 @@ def scan_url():
         dns_findings = check_dns_records(domain)
         whois_findings = check_whois(domain)
         
-        # Détermination du niveau de risque
-        risk_level = "Safe"
-        if safe_browsing:
-            risk_level = "Malicious"
-        elif threat_score >= 3 or sql_findings or xss_findings:
-            risk_level = "High Risk"
-        elif threat_score == 2:
-            risk_level = "Moderate Risk"
-        elif threat_score == 1:
-            risk_level = "Low Risk"
-        
-        # Préparation des résultats complets
+        # Prepare results
         results = {
             "url": url,
-            "risk_level": risk_level,
             "threat_score": threat_score,
             "findings": {
                 "safe_browsing": bool(safe_browsing),
@@ -273,14 +306,31 @@ def scan_url():
             }
         }
         
+        # Calculate security score and risk level
+        results['security_score'] = calculate_security_score(results)
+        
+        if results['security_score'] >= 90:
+            risk_level = "Safe"
+        elif results['security_score'] >= 70:
+            risk_level = "Low Risk"
+        elif results['security_score'] >= 50:
+            risk_level = "Moderate Risk"
+        elif results['security_score'] >= 30:
+            risk_level = "High Risk"
+        else:
+            risk_level = "Malicious"
+        
+        results['risk_level'] = risk_level
+        
         return jsonify(results)
     
     except Exception as e:
         logger.error(f"Erreur lors de l'analyse: {str(e)}", exc_info=True)
         return jsonify({"error": "Une erreur est survenue lors de l'analyse"}), 500
- 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
-
+    # Verify API key is loaded
+    if not API_KEY:
+        logger.warning("Safe Browsing API key not configured - this feature will be disabled")
     
+    app.run(host='0.0.0.0', port=5000, debug=True)

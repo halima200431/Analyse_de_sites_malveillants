@@ -295,6 +295,13 @@
     
     // Afficher tous les résultats
     let findingsHTML = '';
+    // Afficher le score de sécurité
+    findingsHTML += `
+        <div class="finding info">
+            <i class="fas fa-shield-alt"></i>
+            <strong>Score de sécurité:</strong> ${data.security_score} / 100
+        </div>
+    `;
     
     // 1. Google Safe Browsing
     findingsHTML += `
@@ -339,6 +346,8 @@
             ${data.findings.xss.length ? data.findings.xss.join(', ') : 'Aucune détectée'}
         </div>
     `;
+
+
     
     // 6. Certificat SSL (si disponible)
     if(data.findings.ssl) {
@@ -350,7 +359,15 @@
             </div>
         `;
     }
-    
+    // 7. Enregistrements DNS
+findingsHTML += `
+    <div class="finding ${data.findings.dns.length ? 'warning' : 'success'}">
+        <i class="fas ${data.findings.dns.length ? 'fa-globe' : 'fa-check-circle'}"></i>
+        <strong>Enregistrements DNS:</strong>
+        ${data.findings.dns.length ? data.findings.dns.join(', ') : 'Enregistrements valides'}
+    </div>
+`;
+
     findingsContainer.innerHTML = findingsHTML;
     document.getElementById('results').style.display = 'block';
 }
