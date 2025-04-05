@@ -33,7 +33,7 @@ XSS_PATTERNS = ["<script>", "javascript:", "onload=", "onerror=", "alert("]
 
 # Configuration du logging
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(_name_)
 
 def timeout_handling(max_time):
     def decorator(func):
@@ -42,7 +42,7 @@ def timeout_handling(max_time):
             start_time = time.time()
             result = func(*args, **kwargs)
             if time.time() - start_time > max_time:
-                logger.warning(f"Function {func.__name__} took too long")
+                logger.warning(f"Function {func._name_} took too long")
                 return []
             return result
         return wrapper
@@ -280,7 +280,27 @@ def scan_url():
         return jsonify({"error": "Une erreur est survenue lors de l'analyse"}), 500
  
 
-if __name__ == '__main__':
+if _name_ == '_main_':
     app.run(host='0.0.0.0', port=5000, debug=True)
 
+
+
+    from flask import render_template
+
+@app.route('/help', methods=['GET'])
+def help_page():
+    """Affiche la page d'aide avec un formulaire."""
+    return render_template('help.html')
+
+@app.route('/submit-question', methods=['POST'])
+def submit_question():
+    """Traite la question soumise par le client."""
+    question = request.form.get('question')
+    if not question:
+        return jsonify({"error": "Aucune question fournie"}), 400
     
+    # Vous pouvez enregistrer la question dans un fichier ou une base de données
+    logger.info(f"Question reçue : {question}")
+    
+    # Réponse de confirmation
+    return jsonify({"message": "Votre question a été envoyée avec succès !"})
