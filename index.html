@@ -3,139 +3,377 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Détecteur de Sites Malveillants</title>
+    <title>Analyseur de Sécurité Web</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --danger: #ff4757;
+            --warning: #ffa502;
+            --success: #2ed573;
+            --dark: #2f3542;
+            --light: #f1f2f6;
+        }
+        
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(to right, #6a11cb, #2575fc);
+            background: linear-gradient(to right, var(--primary), var(--secondary));
             color: white;
-            text-align: center;
+            min-height: 100vh;
         }
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 15px 30px;
-        }
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            font-size: 18px;
-        }
+        
         .container {
-            margin: 50px auto;
-            width: 90%;
-            max-width: 500px;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
             background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-            color: black;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            color: var(--dark);
         }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+        }
+        
+        .input-group {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+        
         input {
-            width: 80%;
-            padding: 12px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 10px;
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
         }
+        
         button {
-            padding: 12px 25px;
-            font-size: 18px;
-            background: #ff4757;
+            padding: 0.75rem 1.5rem;
+            background: var(--danger);
             color: white;
             border: none;
+            border-radius: 0 5px 5px 0;
             cursor: pointer;
-            border-radius: 5px;
-            transition: 0.3s;
+            font-size: 1rem;
+            transition: background 0.3s;
         }
+        
         button:hover {
             background: #e84118;
         }
-        #result {
-            margin-top: 20px;
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .progress-container {
+            margin: 1.5rem 0;
+            display: none;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #f1f1f1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .status {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .results {
+            display: none;
+            margin-top: 2rem;
+        }
+        
+        .risk-level {
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+            text-align: center;
             font-weight: bold;
-            font-size: 20px;
-            transition: 0.5s;
+            font-size: 1.2rem;
         }
-        .icon {
-            font-size: 28px;
-            margin-right: 10px;
+        
+        .safe {
+            background: rgba(46, 213, 115, 0.2);
+            color: var(--success);
         }
-        .why-us {
-            margin-top: 50px;
-            padding: 30px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            border-radius: 10px;
+        
+        .low-risk {
+            background: rgba(0, 191, 255, 0.2);
+            color: dodgerblue;
+        }
+        
+        .moderate-risk {
+            background: rgba(255, 165, 2, 0.2);
+            color: var(--warning);
+        }
+        
+        .high-risk {
+            background: rgba(255, 71, 87, 0.2);
+            color: var(--danger);
+        }
+        
+        .malicious {
+            background: rgba(255, 71, 87, 0.4);
+            color: var(--danger);
+        }
+        
+        .finding {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 5px;
+            background: #f8f9fa;
+        }
+        
+        .danger {
+            color: var(--danger);
+        }
+        
+        .warning {
+            color: var(--warning);
+        }
+        
+        .success {
+            color: var(--success);
         }
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <h2>Détecteur de Sites Malveillants</h2>
-        <div>
-            <a href="#">Accueil</a>
-            <a href="#">À propos</a>
-            <a href="#">Contact</a>
+    <h1>Analyseur de Sécurité Web</h1>
+    
+    <div class="container">
+        <div class="input-group">
+            <input type="text" id="url-input" placeholder="Entrez une URL (ex: https://exemple.com)">
+            <button id="scan-btn" onclick="startScan()">Analyser</button>
+        </div>
+        
+        <div class="progress-container" id="progress-container">
+            <div class="progress-bar">
+                <div class="progress" id="progress-bar"></div>
+            </div>
+            <div class="status" id="status-text">Préparation de l'analyse...</div>
+        </div>
+        
+        <div class="results" id="results">
+            <div class="risk-level" id="risk-level">
+                <i class="fas fa-shield-alt"></i> <span id="risk-text">Niveau de risque: Inconnu</span>
+            </div>
+            
+            <div id="findings-container"></div>
         </div>
     </div>
-    <div class="container">
-        <h2>Analysez un site web</h2>
-        <input type="text" id="url" placeholder="Entrez une URL">
-        <button onclick="scanUrl()">Vérifier</button>
-        <div id="result"></div>
-    </div>
-    <div class="why-us">
-        <h2>Pourquoi nous ?</h2>
-        <p>Nous offrons une analyse approfondie des sites web pour détecter les menaces potentielles et assurer votre sécurité en ligne.</p>
-    </div>
+    
     <script>
-        async function scanUrl() {
-            const url = document.getElementById('url').value;
+        async function startScan() {
+            const url = document.getElementById('url-input').value.trim();
             if (!url) {
-                alert("Veuillez entrer une URL !");
+                alert("Veuillez entrer une URL valide");
                 return;
             }
-
-            const response = await fetch('http://127.0.0.1:5000/scan', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ url: url })
-            });
-
-            const data = await response.json();
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = "";
-
-            let icon = document.createElement("i");
-            icon.classList.add("icon");
-
-            if (data.risk_level === "Malicious") {
-                icon.classList.add("fas", "fa-times-circle");
-                resultDiv.innerHTML = `<span style="color: red;">❌ Ce site est malveillant !</span>`;
-            } else if (data.risk_level === "High Risk") {
-                icon.classList.add("fas", "fa-exclamation-triangle");
-                resultDiv.innerHTML = `<span style="color: orange;">⚠️ Risque élevé ! Soyez prudent.</span>`;
-            } else if (data.risk_level === "Moderate Risk") {
-                icon.classList.add("fas", "fa-exclamation-circle");
-                resultDiv.innerHTML = `<span style="color: grey;">⚠️ Risque modéré. Faites attention.</span>`;
-            } else if (data.risk_level === "Low Risk") {
-                icon.classList.add("fas", "fa-info-circle");
-                resultDiv.innerHTML = `<span style="color: blue;">⚠️ Risque faible.</span>`;
-            } else {
-                icon.classList.add("fas", "fa-check-circle");
-                resultDiv.innerHTML = `<span style="color: green;">✅ Ce site semble sûr.</span>`;
+            
+            const scanBtn = document.getElementById('scan-btn');
+            scanBtn.disabled = true;
+            scanBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyse...';
+            
+            const progressContainer = document.getElementById('progress-container');
+            progressContainer.style.display = 'block';
+            
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.style.display = 'none';
+            
+            updateProgress(10, "Initialisation de l'analyse...");
+            
+            try {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 15000);
+                
+                updateProgress(30, "Analyse en cours...");
+                
+                const response = await fetch('http://localhost:5000/scan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ url: url }),
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeout);
+                
+                if (!response.ok) {
+                    throw new Error(`Erreur: ${response.status}`);
+                }
+                
+                updateProgress(80, "Traitement des résultats...");
+                
+                const data = await response.json();
+                displayResults(data);
+                
+                updateProgress(100, "Analyse terminée!");
+                
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    showError("L'analyse a pris trop de temps. Le site peut être indisponible ou trop lent.");
+                } else {
+                    showError(`Erreur: ${error.message}`);
+                }
+                updateProgress(0, "Échec de l'analyse");
+            } finally {
+                scanBtn.disabled = false;
+                scanBtn.textContent = 'Analyser';
             }
-
-            resultDiv.prepend(icon);
         }
+        
+        function updateProgress(percent, message) {
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+            document.getElementById('status-text').textContent = message;
+        }
+        
+        function showError(message) {
+            const findingsContainer = document.getElementById('findings-container');
+            findingsContainer.innerHTML = `
+                <div class="finding danger">
+                    <i class="fas fa-exclamation-circle"></i> ${message}
+                </div>
+            `;
+            document.getElementById('results').style.display = 'block';
+        }
+        
+        function displayResults(data) {
+    const riskLevel = document.getElementById('risk-level');
+    const riskText = document.getElementById('risk-text');
+    const findingsContainer = document.getElementById('findings-container');
+    
+    // Définir le niveau de risque
+    riskLevel.className = 'risk-level';
+    let riskClass = '';
+    
+    switch(data.risk_level) {
+        case 'Safe':
+            riskClass = 'safe';
+            riskText.innerHTML = '<i class="fas fa-check-circle"></i> Niveau de risque: Sécurisé';
+            break;
+        case 'Low Risk':
+            riskClass = 'low-risk';
+            riskText.innerHTML = '<i class="fas fa-info-circle"></i> Niveau de risque: Faible';
+            break;
+        case 'Moderate Risk':
+            riskClass = 'moderate-risk';
+            riskText.innerHTML = '<i class="fas fa-exclamation-circle"></i> Niveau de risque: Modéré';
+            break;
+        case 'High Risk':
+            riskClass = 'high-risk';
+            riskText.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Niveau de risque: Élevé';
+            break;
+        case 'Malicious':
+            riskClass = 'malicious';
+            riskText.innerHTML = '<i class="fas fa-skull-crossbones"></i> Niveau de risque: Malveillant';
+            break;
+    }
+    
+    riskLevel.classList.add(riskClass);
+    
+    // Afficher tous les résultats
+    let findingsHTML = '';
+    // Afficher le score de sécurité
+    findingsHTML += `
+        <div class="finding info">
+            <i class="fas fa-shield-alt"></i>
+            <strong>Score de sécurité:</strong> ${data.security_score} / 100
+        </div>
+    `;
+    
+    // 1. Google Safe Browsing
+    findingsHTML += `
+        <div class="finding ${data.findings.safe_browsing ? 'danger' : 'success'}">
+            <i class="fas ${data.findings.safe_browsing ? 'fa-times-circle' : 'fa-check-circle'}"></i>
+            <strong>Google Safe Browsing:</strong> ${data.findings.safe_browsing ? 'Dangereux' : 'Sécurisé'}
+        </div>
+    `;
+    
+    // 2. Score de menace
+    findingsHTML += `
+        <div class="finding info">
+            <i class="fas fa-chart-line"></i>
+            <strong>Score de menace:</strong> ${data.threat_score}/5
+            ${data.threat_score > 2 ? '<span class="warning">(Élevé)</span>' : '<span class="success">(Acceptable)</span>'}
+        </div>
+    `;
+    
+    // 3. Motifs suspects
+    findingsHTML += `
+        <div class="finding ${data.findings.suspicious_patterns.length ? 'warning' : 'success'}">
+            <i class="fas ${data.findings.suspicious_patterns.length ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i>
+            <strong>Motifs suspects:</strong>
+            ${data.findings.suspicious_patterns.length ? data.findings.suspicious_patterns.join(', ') : 'Aucun détecté'}
+        </div>
+    `;
+    
+    // 4. Injection SQL
+    findingsHTML += `
+        <div class="finding ${data.findings.sql_injection.length ? 'danger' : 'success'}">
+            <i class="fas ${data.findings.sql_injection.length ? 'fa-database' : 'fa-check-circle'}"></i>
+            <strong>Injection SQL:</strong>
+            ${data.findings.sql_injection.length ? data.findings.sql_injection.join(', ') : 'Aucune détectée'}
+        </div>
+    `;
+    
+    // 5. Vulnérabilités XSS
+    findingsHTML += `
+        <div class="finding ${data.findings.xss.length ? 'danger' : 'success'}">
+            <i class="fas ${data.findings.xss.length ? 'fa-code' : 'fa-check-circle'}"></i>
+            <strong>Vulnérabilités XSS:</strong>
+            ${data.findings.xss.length ? data.findings.xss.join(', ') : 'Aucune détectée'}
+        </div>
+    `;
+
+
+    
+    // 6. Certificat SSL (si disponible)
+    if(data.findings.ssl) {
+        findingsHTML += `
+            <div class="finding ${data.findings.ssl.length ? 'warning' : 'success'}">
+                <i class="fas ${data.findings.ssl.length ? 'fa-unlock' : 'fa-lock'}"></i>
+                <strong>Certificat SSL:</strong>
+                ${data.findings.ssl.length ? data.findings.ssl.join(', ') : 'Valide et sécurisé'}
+            </div>
+        `;
+    }
+    // 7. Enregistrements DNS
+    findingsHTML += `
+        <div class="finding ${data.findings.dns.length ? 'warning' : 'success'}">
+            <i class="fas ${data.findings.dns.length ? 'fa-globe' : 'fa-check-circle'}"></i>
+            <strong>Enregistrements DNS:</strong>
+            ${data.findings.dns.length ? data.findings.dns.join(', ') : 'Enregistrements valides'}
+        </div>
+    `;
+
+    findingsContainer.innerHTML = findingsHTML;
+    document.getElementById('results').style.display = 'block';
+}
+
+
     </script>
+    
 </body>
 </html>
