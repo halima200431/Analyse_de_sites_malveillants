@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair Display:wght@500;700&display=swap" rel="stylesheet">
+    <header>
+        <nav>
+            <a href="#" class="logo">
+                <span class="logo-icon">🛡️</span>
+                ASW
+            </a>
+            <div class="nav-links">
+                <a href="#">Accueil</a>
+                <a href="#">Services</a>
+                <a href="#">À propos</a>
+                <a href="#" class="active">Aide</a>
+            </div>
+
+        </nav>
+    </header>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Analyseur de Sécurité Web</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="style/global.css">
+        <style>
+            /* Style pour l'affichage horizontal des résultats */
+            .findings-grid {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .finding {
+                flex: 1 1 300px;
+                min-width: 300px;
+            }
+            
+            /* Style pour le score circulaire */
+            .score-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+            
+            .circular-progress {
+                position: relative;
+                height: 150px;
+                width: 150px;
+                border-radius: 50%;
+                background: conic-gradient(#2a7fdb 0deg, #e0e0e0 0deg);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 10px;
+            }
+            
+            .circular-progress::before {
+                content: "";
+                position: absolute;
+                height: 130px;
+                width: 130px;
+                border-radius: 50%;
+                background-color: rgb(255, 255, 255);
+            }
+            
+            .progress-value {
+                position: relative;
+                font-size: 30px;
+                font-weight: bold;
+                color: #2a7fdb;
+            }
+            
+            .security-score {
+                font-size: 1.2em;
+                font-weight: bold;
+                text-align: center;
+            }
+            
+            /* Style pour le niveau de risque */
+            .risk-level {
+                margin-top: 15px;
+                padding: 10px 20px;
+                border-radius: 20px;
+                font-weight: bold;
+                text-align: center;
+            }
+            
+            .safe {
+                background-color: #4CAF50;
+                color: white;
+            }
+            
+            .low-risk {
+                background-color: #8BC34A;
+                color: white;
+            }
+            
+            .moderate-risk {
+                background-color: #FFC107;
+                color: black;
+            }
+            
+            .high-risk {
+                background-color: #FF9800;
+                color: white;
+            }
+            
+            .malicious {
+                background-color: #F44336;
+                color: white;
+            }
+        </style>
+    </head>
+<body>
+    
+    <div class="container">
+        <h1>Testez la sécurité de votre site Web gratuitement</h1>
+        
+        <div class="input-group">
+            <div class="url-label">Veulliez insérer l'adresse Internet de votre site</div>
+            <input type="text" id="url-input" placeholder="https://exemple.com">
+            <button id="scan-btn" onclick="startScan()" class="analyze-btn">Analyser !</button>
+        </div>
+        
+        <div class="progress-container" id="progress-container" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress" id="progress-bar"></div>
+            </div>
+            <div class="status" id="status-text">Préparation de l'analyse...</div>
+        </div>
+        
+        <div class="results" id="results" style="display: none;">
+            <!-- Score circulaire centré -->
+            <div class="score-container">
+                <div class="circular-progress" id="circular-progress">
+                    <span class="progress-value" id="progress-value">0%</span>
+                </div>
+                <div class="security-score">
+                    <i class="fas fa-shield-alt"></i> Score de sécurité
+                </div>
+            </div>
+            
+            <!-- Niveau de risque -->
+            <div class="risk-level" id="risk-level">
+                <i class="fas fa-shield-alt"></i> <span id="risk-text">Niveau de risque: Inconnu</span>
+            </div>
+            
+            <!-- Affichage horizontal des résultats -->
+            <div class="findings-grid" id="findings-container"></div>
+        </div>
+    </div>
+    
+    <script>
+        async function startScan() {
+            const url = document.getElementById('url-input').value.trim();
+            if (!url) {
+                alert("Veuillez entrer une URL valide");
+                return;
+            }
+            
+            const scanBtn = document.getElementById('scan-btn');
+            scanBtn.disabled = true;
+            scanBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyse...';
+            
+            const progressContainer = document.getElementById('progress-container');
+            progressContainer.style.display = 'block';
+            
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.style.display = 'none';
+            
+            updateProgress(10, "Initialisation de l'analyse...");
+            
+            try {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 15000);
+                
+                updateProgress(30, "Analyse en cours...");
+                
+                const response = await fetch('http://localhost:5000/scan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ url: url }),
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeout);
+                
+                if (!response.ok) {
+                    throw new Error(`Erreur: ${response.status}`);
+                }
+                
+                updateProgress(80, "Traitement des résultats...");
+                
+                const data = await response.json();
+                displayResults(data);
+                
+                updateProgress(100, "Analyse terminée!");
+                
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    showError("L'analyse a pris trop de temps. Le site peut être indisponible ou trop lent.");
+                } else {
+                    showError(`Erreur: ${error.message}`);
+                }
+                updateProgress(0, "Échec de l'analyse");
+            } finally {
+                scanBtn.disabled = false;
+                scanBtn.innerHTML = 'Analyser !';
+            }
+        }
+        
+        function updateProgress(percent, message) {
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+            document.getElementById('status-text').textContent = message;
+        }
+        
+        function showError(message) {
+            const findingsContainer = document.getElementById('findings-container');
+            findingsContainer.innerHTML = `
+                <div class="finding danger">
+                    <i class="fas fa-exclamation-circle"></i> ${message}
+                </div>
+            `;
+            document.getElementById('results').style.display = 'block';
+        }
+        
+        function displayResults(data) {
+            const riskLevel = document.getElementById('risk-level');
+            const riskText = document.getElementById('risk-text');
+            const findingsContainer = document.getElementById('findings-container');
+            
+            // Mettre à jour le score circulaire
+            const circularProgress = document.getElementById('circular-progress');
+            const progressValue = document.getElementById('progress-value');
+            const score = data.security_score;
+            
+            progressValue.textContent = `${score}%`;
+            
+            // Changer la couleur en fonction du score
+            let scoreColor = '#4CAF50'; // Vert par défaut
+            if (score < 40) scoreColor = '#F44336'; // Rouge
+            else if (score < 70) scoreColor = '#FFC107'; // Jaune
+            
+            circularProgress.style.background = `conic-gradient(${scoreColor} ${score * 3.6}deg, #e0e0e0 0deg)`;
+            
+            // Définir le niveau de risque
+            riskLevel.className = 'risk-level';
+            let riskClass = '';
+            
+            switch(data.risk_level) {
+                case 'Safe':
+                    riskClass = 'safe';
+                    riskText.innerHTML = '<i class="fas fa-check-circle"></i> Niveau de risque: Sécurisé';
+                    break;
+                case 'Low Risk':
+                    riskClass = 'low-risk';
+                    riskText.innerHTML = '<i class="fas fa-info-circle"></i> Niveau de risque: Faible';
+                    break;
+                case 'Moderate Risk':
+                    riskClass = 'moderate-risk';
+                    riskText.innerHTML = '<i class="fas fa-exclamation-circle"></i> Niveau de risque: Modéré';
+                    break;
+                case 'High Risk':
+                    riskClass = 'high-risk';
+                    riskText.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Niveau de risque: Élevé';
+                    break;
+                case 'Malicious':
+                    riskClass = 'malicious';
+                    riskText.innerHTML = '<i class="fas fa-skull-crossbones"></i> Niveau de risque: Malveillant';
+                    break;
+            }
+            
+            riskLevel.classList.add(riskClass);
+            
+            // Afficher tous les résultats horizontalement
+            let findingsHTML = '';
+            
+            // 1. Google Safe Browsing
+            findingsHTML += `
+                <div class="finding ${data.findings.safe_browsing ? 'danger' : 'success'}">
+                    <i class="fas ${data.findings.safe_browsing ? 'fa-times-circle' : 'fa-check-circle'}"></i>
+                    <strong>Google Safe Browsing:</strong> ${data.findings.safe_browsing ? 'Dangereux' : 'Sécurisé'}
+                </div>
+            `;
+            
+            // 2. Score de menace
+            findingsHTML += `
+                <div class="finding info">
+                    <i class="fas fa-chart-line"></i>
+                    <strong>Score de menace:</strong> ${data.threat_score}/5
+                    ${data.threat_score > 2 ? '<span class="warning">(Élevé)</span>' : '<span class="success">(Acceptable)</span>'}
+                </div>
+            `;
+            
+            // 3. Motifs suspects
+            findingsHTML += `
+                <div class="finding ${data.findings.suspicious_patterns.length ? 'warning' : 'success'}">
+                    <i class="fas ${data.findings.suspicious_patterns.length ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i>
+                    <strong>Motifs suspects:</strong>
+                    ${data.findings.suspicious_patterns.length ? data.findings.suspicious_patterns.join(', ') : 'Aucun détecté'}
+                </div>
+            `;
+            
+            // 4. Injection SQL
+            findingsHTML += `
+                <div class="finding ${data.findings.sql_injection.length ? 'danger' : 'success'}">
+                    <i class="fas ${data.findings.sql_injection.length ? 'fa-database' : 'fa-check-circle'}"></i>
+                    <strong>Injection SQL:</strong>
+                    ${data.findings.sql_injection.length ? data.findings.sql_injection.join(', ') : 'Aucune détectée'}
+                </div>
+            `;
+            
+            // 5. Vulnérabilités XSS
+            findingsHTML += `
+                <div class="finding ${data.findings.xss.length ? 'danger' : 'success'}">
+                    <i class="fas ${data.findings.xss.length ? 'fa-code' : 'fa-check-circle'}"></i>
+                    <strong>Vulnérabilités XSS:</strong>
+                    ${data.findings.xss.length ? data.findings.xss.join(', ') : 'Aucune détectée'}
+                </div>
+            `;
+            
+            // 6. Certificat SSL (si disponible)
+            if(data.findings.ssl) {
+                findingsHTML += `
+                    <div class="finding ${data.findings.ssl.length ? 'warning' : 'success'}">
+                        <i class="fas ${data.findings.ssl.length ? 'fa-unlock' : 'fa-lock'}"></i>
+                        <strong>Certificat SSL:</strong>
+                        ${data.findings.ssl.length ? data.findings.ssl.join(', ') : 'Valide et sécurisé'}
+                    </div>
+                `;
+            }
+            
+            // 7. Enregistrements DNS
+            findingsHTML += `
+                <div class="finding ${data.findings.dns.length ? 'warning' : 'success'}">
+                    <i class="fas ${data.findings.dns.length ? 'fa-globe' : 'fa-check-circle'}"></i>
+                    <strong>Enregistrements DNS:</strong>
+                    ${data.findings.dns.length ? data.findings.dns.join(', ') : 'Enregistrements valides'}
+                </div>
+            `;
+
+            findingsContainer.innerHTML = findingsHTML;
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-info">
+            <div class="footer-logo">🛡️ ASW</div>
+            <p>Votre outil essentiel pour vérifier la sécurité des sites web et vous protéger contre les menaces en ligne.</p>
+        </div>
+        
+        
+        <div class="footer-links">
+            <h4>Entreprise</h4>
+            <ul>
+                <li><a href="#">À propos</a></li>
+                <li><a href="#">Carrières</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-links">
+            <h4>Ressources</h4>
+            <ul>
+                <li><a href="#">Centre d'aide</a></li>
+                <li><a href="#">Base de connaissances</a></li>
+                <li><a href="#">Politique de confidentialité</a></li>
+                <li><a href="#">Conditions d'utilisation</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <p>&copy; 2025 ASW. Tous droits réservés.</p>
+    </div>
+</footer>
+</html>
