@@ -1,0 +1,346 @@
+.hidden {
+  display: none;
+}
+
+#inputSection {
+  margin-top: 20px;
+}
+
+#inputSection input {
+  padding: 10px;
+  width: 300px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+#inputSection button {
+  padding: 10px 15px;
+  margin-left: 10px;
+  background: #0044cc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+:root {
+    --primary-color: #2563eb;
+    --secondary-color: #1e40af;
+    --text-color: #1f2937;
+    --light-bg: #f3f4f6;
+    --white: #ffffff;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--white);
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.logo i {
+    font-size: 1.8rem;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: var(--primary-color);
+}
+
+/* Hero Section */
+.hero {
+    padding: 8rem 5% 4rem;
+    text-align: center;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--white);
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.cta-button {
+    background-color: var(--white);
+    color: var(--primary-color);
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s;
+    margin-top: 2rem;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+}
+
+/* Analysis Section */
+.analysis-section {
+    padding: 4rem 5%;
+    background-color: var(--light-bg);
+}
+
+.url-input-container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    gap: 1rem;
+}
+
+.url-input-container input {
+    flex: 1;
+    padding: 1rem;
+    border: 2px solid var(--gray-300);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+}
+
+.analyze-button {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.analyze-button:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Features Section */
+.features {
+    padding: 4rem 5%;
+    text-align: center;
+}
+
+.features h2 {
+    margin-bottom: 3rem;
+    font-size: 2rem;
+}
+
+.feature-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    padding: 2rem;
+    background-color: var(--white);
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-card i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+/* Tests Section */
+.tests-section {
+    padding: 4rem 5%;
+    background-color: var(--light-bg);
+    text-align: center;
+}
+
+.test-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 2rem auto 0;
+}
+
+.test-item {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+}
+
+.test-item i {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+/* FAQ Section */
+.faq-section {
+    padding: 4rem 5%;
+}
+
+.faq-section h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background-color: var(--white);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+}
+
+.faq-item h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.faq-button-container {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.info-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.info-button:hover {
+    background-color: #0056b3;
+}
+
+/* Footer */
+footer {
+    background-color: var(--text-color);
+    color: var(--white);
+    padding: 4rem 5% 2rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-section h4 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.footer-section a {
+    color: var(--gray-200);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.footer-section a:hover {
+    color: var(--white);
+}
+
+.copyright {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--gray-300);
+    opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1rem;
+    }
+
+    .nav-links {
+        gap: 1rem;
+    }
+
+    .hero {
+        padding: 6rem 1rem 3rem;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .url-input-container {
+        flex-direction: column;
+    }
+
+    .feature-cards, .test-items {
+        grid-template-columns: 1fr;
+    }
+}
