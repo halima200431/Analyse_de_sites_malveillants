@@ -12,14 +12,12 @@ body {
     --light-blue: #3396aa; /* Turquoise */
     --dark-blue: #012d6e; 
     --white: #ffffff;
-    --light-grey: #f5f7fa;
-    --grey: #8c9cb3;
-    --dark-grey: #1a1a2e; /* Gris Anthracite */
-    --success-green: #164b35;
-    --danger-red: #772027; /* Rouge */
-    --shadow-sm: 0 2px 8px rgba(0, 82, 204, 0.1);
-    --shadow-md: 0 4px 12px rgba(0, 82, 204, 0.15);
-    --shadow-lg: 0 8px 24px rgba(0, 82, 204, 0.2);
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --primary-blue: #0a192f;
+    --light-blue: #3396aa;
+    --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 header {
@@ -32,7 +30,7 @@ header {
     z-index: 100;
 }
 
-nav {
+.navbar {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -55,12 +53,6 @@ nav {
 
 .logo:hover {
     transform: translateX(5px);
-}
-
-.logo-icon {
-    margin-right: 10px;
-    font-size: 2rem;
-    animation: pulse 2s infinite;
 }
 
 .nav-links {
@@ -92,10 +84,9 @@ nav {
     width: 100%;
 }
 
-.nav-links a.active {
+.nav-links a:hover {
     color: var(--light-blue);
 }
-
 
 .hero {
     position: relative;
