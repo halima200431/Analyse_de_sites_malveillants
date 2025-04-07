@@ -6,22 +6,23 @@
     <title>Détecteur de sites malveillants</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="[https://fonts.googleapis.com/css2?family=Playfair](https://fonts.googleapis.com/css2?family=Playfair) Display:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../style/global.css">
 </head>
 <body>
     <!-- Navbar -->
     <header>
-        <nav>
-            <a href="#" class="logo">
-                <span class="logo-icon">🛡️</span>
-                ASW
-            </a>
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>ASW</span>
+            </div>
             <div class="nav-links">
                 <a href="#" class="active">Accueil</a>
-                <a href="#">Services</a>
-                <a href="#">À propos</a>
-                <a href="#">Aide</a>
+                <a href="../analyse.html">Analyser</a>
+                <a href="../page.html">Centre de Cybersécurité</a>
+                <a href="../help.html">Centre d'aide</a>
+                <a href="../about.html">A propos</a>
             </div>
         </nav>
     </header>
@@ -38,13 +39,13 @@
                 <p>Analyse automatique de différents aspects</p>
                 <p>Analysez, détectez et comprenez les sites malveillants en un seul clic.</p>
             </div>
-            <button class="cta-button">Commencer l'analyse</button>
+            <a href="../analyse.html" class="cta-button">Commencer l'analyse</a>
         </div>
     </div>
 
     <!-- Features Section -->
     <section class="features" id="features">
-        <h2>Pourquoi nous choisir ?</h2>
+        <h2>Pourquoi choisir ASW ?</h2>
         <div class="feature-cards">
             <div class="feature-card">
                 <i class="fas fa-lock"></i>
@@ -57,9 +58,9 @@
                 <p>Vérification approfondie de multiples aspects de sécurité</p>
             </div>
             <div class="feature-card">
-                <i class="fas fa-brain"></i>
-                <h3>IA Intelligente</h3>
-                <p>Algorithmes d'apprentissage automatique pour une détection précise</p>
+                <i class="fas fa-desktop"></i>
+                <h3>Compatible Partout</h3>
+                <p>Fonctionne sur tous les navigateurs et systèmes d'exploitation</p>
             </div>
         </div>
     </section>
@@ -119,7 +120,7 @@
             </div>
         </div>
         <div class="faq-button-container">
-            <button class="info-button">Plus d'info</button>
+            <a href="../help.html" class="info-button">Plus d'info</a>
         </div>
     </section>
 
