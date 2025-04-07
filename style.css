@@ -8,14 +8,14 @@ body {
 }
 
 header {
-    background: #0682ff;
+    background: #0a192f;;
     color: white;
     text-align: center;
     padding: 40px;
 }
 
 .hero {
-    background: linear-gradient(to right, #0073e6, #00c6ff); /* Gradient background */
+    background: linear-gradient(to bottom,  #012459, #7088bb); /* Gradient background */
     color: white;
     padding: 80px 0;
     width: 100vw; /* Full viewport width */
@@ -65,7 +65,7 @@ p {
   }
   .btn {
     display: inline-block;
-    background-color: #3f74ff;
+    background-color: #0a192f;
     color: white;
     padding: 12px 24px;
     border-radius: 30px;
@@ -76,7 +76,7 @@ p {
   }
   
   .btn:hover {
-    background-color: #2558d0;
+    background-color: #7088bb;
   }
   
   .image-block {
@@ -92,7 +92,7 @@ p {
   }
   
 button {
-    background: #0073e6;
+    background: #0a192f;
     color: white;
     border: none;
     padding: 10px 15px;
@@ -102,7 +102,7 @@ button {
 }
 
 button:hover {
-    background: #005bb5;
+    background: #7088bb;
 }
 
 .intro {
@@ -154,7 +154,7 @@ button:hover {
 }
 
 .icon {
-    background-color: #2563eb;
+    background-color: #0a192f;
     color: rgb(255, 255, 255);
     width: 60px;
     height: 60px;
@@ -189,7 +189,7 @@ button:hover {
     display: inline-block;
     margin-top: 40px;
     padding: 15px 30px;
-    background-color: #0c74dc;
+    background-color: #0a192f;
     color: white;
     font-weight: bold;
     font-size: 16px;
@@ -199,10 +199,10 @@ button:hover {
 }
 
 .cta-button:hover {
-    background-color: #320dc7;
+    background-color: #0a192f;
 }
  ul {
-    color:#0073e6;
+    color:#7088bb;
  }
 
 ul li {
@@ -265,7 +265,7 @@ ul li {
 }
 
 .incident-list::-webkit-scrollbar-thumb {
-    background: #2563eb; /* Scrollbar color */
+    background: #7088bb; /* Scrollbar color */
     border-radius: 4px;
 }
 
@@ -285,12 +285,12 @@ ul li {
     left: 0;
     width: 100%;
     height: 6px;
-    background: linear-gradient(90deg, #3b82f6, #1e40af); /* Decorative top bar */
+    background: linear-gradient(90deg, #7088bb, #012d6e); /* Decorative top bar */
 }
 
 .incident-item h3 {
     font-size: 20px;
-    color: #3b82f6; /* Blue heading */
+    color: #012d6e; /* Blue heading */
     margin-bottom: 15px;
     font-weight: bold;
     text-transform: capitalize;
@@ -309,7 +309,7 @@ ul li {
 
 .incident-item .icon {
     position: relative;
-    background: #3b82f6;
+    background: #012d6e; /* Blue background for icon */
     color: white;
     width: 60px; /* Larger icon */
     height: 60px;
@@ -336,7 +336,7 @@ ul li {
 .cta-button {
     display: inline-block;
     padding: 15px 40px;
-    background-color: #3b82f6;
+    background-color: #012d6e;
     color: white;
     font-weight: bold;
     font-size: 16px;
@@ -348,7 +348,7 @@ ul li {
 }
 
 .cta-button:hover {
-    background-color: #1e40af;
+    background-color: #012d6e;
     transform: scale(1.1);
 }
 
@@ -402,7 +402,7 @@ ul li {
 
 .regulation-card h3 {
     font-size: 20px;
-    color: #2563eb;
+    color: #284689;
     margin-bottom: 10px;
     font-weight: 600;
 }
@@ -439,7 +439,7 @@ ul li {
 .cta-button {
     display: inline-block;
     padding: 12px 30px;
-    background-color: #2563eb;
+    background-color: #012d6e;
     color: white;
     font-weight: bold;
     font-size: 16px;
@@ -476,7 +476,7 @@ ul li {
 footer {
     text-align: center;
     padding: 10px;
-    background: #0073e6;
+    background: #012d6e;
     color: white;
     margin-top: 20px;
 }
