@@ -255,18 +255,13 @@
         }
         
         .contact-options {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
+            display: flex;
+            justify-content: center; /* Centre horizontalement */
+            align-items: center; /* Centre verticalement */
+            gap: 2rem; /* Espacement entre les cartes */
             margin-top: 2rem;
         }
-        
-        @media (max-width: 768px) {
-            .contact-options {
-                grid-template-columns: 1fr;
-            }
-        }
-        
+
         .contact-card {
             background-color: var(--white);
             padding: 2rem;
@@ -274,17 +269,13 @@
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 300px; /* Taille fixe pour uniformité */
         }
         
-        .contact-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        }
-        
-        .contact-icon {
-            font-size: 2.5rem;
-            color: var(--primary-blue);
-            margin-bottom: 1rem;
+        @media (max-width: 768px) {
+            .contact-options {
+                grid-template-columns: 1fr;
+            }
         }
         
         .btn {
@@ -388,6 +379,12 @@
         .icon-alert {
             color: var(--danger-red);
             margin-right: 0.5rem;
+        }
+        
+        .contact-icon {
+            font-size: 3rem; /* Augmente la taille des icônes */
+            color: var(--primary-blue); /* Conserve la couleur */
+            margin-bottom: 1rem; /* Espacement sous l'icône */
         }
     </style>
 </head>
@@ -629,13 +626,6 @@
                             <h3>Email</h3>
                             <p>Réponse sous 24 heures</p>
                             <a href="#" class="btn">support@analyseurweb.fr</a>
-                        </div>
-                        
-                        <div class="contact-card">
-                            <div class="contact-icon">💬</div>
-                            <h3>Chat en direct</h3>
-                            <p>Disponible 7j/7 de 8h à 22h</p>
-                            <a href="#" class="btn">Démarrer un chat</a>
                         </div>
                         
                         <div class="contact-card">
