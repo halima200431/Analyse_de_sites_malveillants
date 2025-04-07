@@ -36,7 +36,7 @@ XSS_PATTERNS = ["<script>", "javascript:", "onload=", "onerror=", "alert("]
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(_name_)
+logger = logging.getLogger(__name__)
 
 def calculate_security_score(results):
     """Calculate overall security score (0-100%)"""
