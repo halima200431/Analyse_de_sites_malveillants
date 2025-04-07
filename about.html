@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À propos de nous - ASW</title>
+    <style>
+        /* Variables de couleurs */
+        :root {
+            --primary-blue: #0a192f; /* Bleu Navy */
+            --secondary-blue: #2a7fdb;
+            --light-blue: #e6f2ff;
+            --dark-blue: #03265b;
+            --white: #ffffff;
+            --light-grey: #f5f7fa;
+            --grey: #8c9cb3;
+            --dark-grey: #2c3e50;
+            --success-green: #36b37e;
+            --danger-red: #ff5630;
+        }
+        
+        body {
+            font-family:'Playfair Display', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-grey);
+            color: var(--dark-grey);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--white);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--light-blue);
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        
+        h1 {
+            color: var(--dark-blue);
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 2.5rem;
+        }
+        
+        .about-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+        
+        @media (max-width: 768px) {
+            .about-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .about-content {
+            background-color: var(--white);
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .about-image {
+            background-color: var(--light-blue);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+        }
+        
+        h2 {
+            color: var(--primary-blue);
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+        
+        p {
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+        }
+        
+        .features-section {
+            margin-top: 4rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 900px) {
+            .features-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .feature-card {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+        
+        .team-section {
+            margin-top: 5rem;
+            text-align: center;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 1100px) {
+            .team-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 500px) {
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .team-member {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-section {
+            text-align: center;
+            margin-top: 5rem;
+            padding: 3rem;
+            background-color: var(--light-blue);
+            border-radius: 10px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .btn:hover {
+            background-color: var(--dark-blue);
+        }
+        
+        footer {
+            background-color: var(--dark-blue);
+            color: var(--white);
+            padding: 3rem 0;
+            margin-top: 5rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        @media (max-width: 900px) {
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links h4 {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            color: var(--light-blue);
+        }
+        
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: var(--grey);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--white);
+        }
+        
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding: 1.5rem 2rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: var(--grey);
+            font-size: 0.9rem;
+        }
+        
+        .accent-text {
+            color: var(--primary-blue);
+            font-weight: bold;
+        }
+        
+        .highlight-box {
+            background-color: var(--light-blue);
+            border-left: 4px solid var(--primary-blue);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .icon-check {
+            color: var(--success-green);
+            margin-right: 0.5rem;
+        }
+        
+        .icon-alert {
+            color: var(--danger-red);
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="logo">
+                <span class="logo-icon">🛡️</span>
+                ASW
+            </a>
+            <div class="nav-links">
+                <a href="#">Accueil</a>
+                <a href="#">Services</a>
+                <a href="#" class="active">À propos</a>
+                <a href="#">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1>À propos de ASW</h1>
+        
+        <div class="about-container">
+            <div class="about-content">
+                <h2>Notre mission</h2>
+                <p>Chez <span class="accent-text">ASW</span> (Analysis of Secure Websites), nous nous engageons à créer un internet plus sûr pour tous. Fondée en 2025, notre plateforme s'est donnée pour mission d'analyser et d'évaluer la sécurité des sites web afin de protéger les internautes contre les menaces en ligne.</p>
+                
+                <p>Dans un monde numérique où les cybermenaces sont omniprésentes, notre service d'analyse de sécurité identifie rapidement les vulnérabilités potentielles, les injections SQL, les failles XSS, et vérifie la validité des certificats SSL pour garantir une navigation en toute sécurité.</p>
+                
+                <div class="highlight-box">
+                    <p><strong>Notre vision est simple :</strong> Offrir un outil fiable, rapide et précis permettant à chacun de vérifier la sécurité d'un site web avant d'y accéder, sans compromettre ses données personnelles ou la sécurité de ses appareils.</p>
+                </div>
+                
+                <h2>Ce qui nous distingue</h2>
+                <p>Contrairement aux solutions traditionnelles, ASW ne se contente pas de comparer les URL à des listes noires existantes. Notre technologie analyse en profondeur la structure du site, son code source et ses mécanismes d'interaction pour détecter en temps réel de nombreuses vulnérabilités, même celles qui n'ont jamais été signalées auparavant.</p>
+            </div>
+            
+            <div class="about-image">
+                <img src="/api/placeholder/600/400" alt="Analyse de sécurité ASW en action" />
+            </div>
+        </div>
+        
+        <div class="features-section">
+            <h2>Notre technologie d'analyse</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Analyse de sécurité complète</h3>
+                    <p>Notre moteur d'analyse examine en profondeur les sites web pour détecter les vulnérabilités potentielles et garantir une navigation sécurisée.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Évaluation en temps réel</h3>
+                    <p>Notre technologie fournit une analyse instantanée, avec une vérification complète en moins de 300 millisecondes avant que vous n'accédiez au site.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Intelligence artificielle</h3>
+                    <p>Nos algorithmes d'apprentissage automatique s'améliorent continuellement pour détecter les nouvelles techniques d'attaque et les vulnérabilités émergentes.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Détection des injections SQL</h3>
+                    <p>Notre système identifie les tentatives d'injection SQL qui pourraient compromettre les bases de données et la sécurité des informations personnelles.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔐</div>
+                    <h3>Vérification des certificats SSL</h3>
+                    <p>Nous vérifions l'authenticité et la validité des certificats SSL pour garantir des connexions sécurisées et chiffrées entre vous et les sites web.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Protection contre le XSS</h3>
+                    <p>Notre outil détecte les vulnérabilités de type Cross-Site Scripting (XSS) qui pourraient permettre à des attaquants d'injecter du code malveillant.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="team-section">
+            <h2>Notre équipe d'experts</h2>
+            <p>ASW réunit des professionnels passionnés par la cybersécurité et déterminés à rendre le web plus sûr pour tous.</p>
+            
+            <div class="team-grid">
+                <div class="team-member">
+                    <h3>Halima Badr</h3>
+                </div>
+                
+                <div class="team-member">
+                    <h3>Asma Bensassi Nour</h3>
+                </div>
+                
+                <div class="team-member">
+                    <h3>Iliass Chbani</h3>
+                </div>
+                
+                <div class="team-member">
+                    <h3>Hidaya Benchelha</h3>
+                </div>
+                
+                <div class="team-member">
+                    <h3>Ikram Laabooki</h3>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cta-section">
+            <h2>Vérifiez la sécurité de vos sites dès maintenant</h2>
+            <p>Rejoignez des millions d'utilisateurs qui font confiance à ASW pour analyser la sécurité de leurs sites web préférés.</p>
+            <a href="#" class="btn">Analyser un site gratuitement</a>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <div class="footer-logo">🛡️ ASW</div>
+                <p>L'outil de référence pour l'analyse de sécurité des sites web et la protection contre les cybermenaces.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#">Analyse de sécurité</a></li>
+                    <li><a href="#">Vérification SSL</a></li>
+                    <li><a href="#">API pour développeurs</a></li>
+                    <li><a href="#">Solutions d'entreprise</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Entreprise</h4>
+                <ul>
+                    <li><a href="#">À propos</a></li>
+                    <li><a href="#">Carrières</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Ressources</h4>
+                <ul>
+                    <li><a href="#">Centre d'aide</a></li>
+                    <li><a href="#">Rapport de vulnérabilités</a></li>
+                    <li><a href="#">Politique de confidentialité</a></li>
+                    <li><a href="#">Conditions d'utilisation</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 ASW (Analysis of Secure Websites). Tous droits réservés.</p>
+        </div>
+    </footer>
+</body>
+</html>
