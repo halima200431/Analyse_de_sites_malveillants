@@ -167,33 +167,54 @@
         }
         
         .help-categories {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            width: 100%;
-        }
-        
-        .help-categories li {
-            margin-bottom: 0.5rem;
-            width: 100%;
-        }
-        
-        .help-categories a {
-            display: block;
-            padding: 0.8rem 1rem;
-            color: var(--dark-grey);
-            text-decoration: none;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        
-        .help-categories a:hover, .help-categories a.active {
-            background-color: var(--light-blue);
-            color: var(--primary-blue);
-        }
-        
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.help-categories li {
+    margin-bottom: 0.5rem;
+    width: 100%;
+}
+
+.help-categories a {
+    display: block;
+    padding: 0.8rem 1rem;
+    color: var(--dark-grey);
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.help-categories a:hover {
+    background-color: rgba(162, 190, 226, 0.2); /* Version très légère */
+}
+
+/* Style actif avec dégradé light blue */
+.help-categories a.active {
+    background: linear-gradient(135deg, rgba(162, 190, 226, 0.3), rgba(122, 176, 247, 0.5));
+    color: var(--primary-blue);
+    font-weight: 600;
+    border-left: 3px solid var(--light-blue);
+    padding-left: calc(1rem - 3px);
+}
+
+/* Effet de lumière optionnel */
+.help-categories a.active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(162, 190, 226, 0.4);
+    pointer-events: none;
+}
         h2 {
             color: var(--primary-blue);
             margin-top: 0;
@@ -697,5 +718,33 @@
             <p>&copy; 2025 ASW. Tous droits réservés.</p>
         </div>
     </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.help-section');
+            const links = document.querySelectorAll('.help-categories a');
+            
+            // Observer les sections visibles
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Retirer 'active' de tous les liens
+                        links.forEach(link => link.classList.remove('active'));
+                        
+                        // Trouver le lien correspondant et ajouter 'active'
+                        const id = entry.target.getAttribute('id');
+                        const matchingLink = document.querySelector(`.help-categories a[href="#${id}"]`);
+                        if (matchingLink) {
+                            matchingLink.classList.add('active');
+                        }
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            // Observer chaque section
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+        </script>
 </body>
 </html>
