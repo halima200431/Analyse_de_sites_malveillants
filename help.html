@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair Display:wght@500;700&display=swap" rel="stylesheet">
     <title>Centre d'aide - ASW</title>
     <style>
         /* Variables de couleurs */
@@ -20,7 +21,7 @@
         }
         
         body {
-            font-family:'Playfair Display', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--light-grey);
@@ -105,7 +106,7 @@
         }
         
         .help-sidebar {
-            background-color: var(--white);
+            background-color: #e0e4e9;
             padding: 2rem;
             border-radius: 10px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
@@ -397,12 +398,19 @@
                 ASW
             </a>
             <div class="nav-links">
-                <a href="#">Accueil</a>
-                <a href="#">Services</a>
-                <a href="#">À propos</a>
-                <a href="#" class="active">Aide</a>
-            </div>
-        </nav>
+                <nav class="navbar">
+                    <div class="logo">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>ASW</span>
+                    </div>
+                    <div class="nav-links">
+                        <a href="Acceuil/accueil.html" class="active">Accueil</a>
+                        <a href="analyse.html">Analyser</a>
+                        <a href="page.html">Centre de Cybersécurité</a>
+                        <a href="help.html">Centre d'aide</a>
+                        <a href="about.html">A propos</a>
+                    </div>
+                    </nav>
     </header>
 
     <main>
@@ -476,14 +484,6 @@
                 <section id="comprendre-resultats" class="help-section">
                     <h2>Comprendre les résultats d'analyse</h2>
                     <p>Une fois l'analyse terminée, notre outil vous présente un rapport détaillé sur la sécurité du site web. Voici comment interpréter les différentes sections du rapport.</p>
-                    
-                    <h3>Niveau de risque global</h3>
-                    <p>Notre système utilise un indicateur à code couleur pour évaluer le niveau de risque global du site :</p>
-                    <ul>
-                        <li><span style="color: var(--success-green); font-weight: bold;">Sécurisé</span> : Le site ne présente aucun risque détecté</li>
-                        <li><span style="color: orange; font-weight: bold;">Attention</span> : Le site présente quelques risques mineurs</li>
-                        <li><span style="color: var(--danger-red); font-weight: bold;">Dangereux</span> : Le site présente des risques graves de sécurité</li>
-                    </ul>
                     
                     <h3>Éléments analysés</h3>
                     <p>Notre rapport détaille plusieurs aspects de sécurité :</p>
@@ -626,14 +626,14 @@
                             <div class="contact-icon">📧</div>
                             <h3>Email</h3>
                             <p>Réponse sous 24 heures</p>
-                            <a href="#" class="btn">support@analyseurweb.fr</a>
+                            <a href="#" class="btn">aws@gmail.com</a>
                         </div>
                         
                         <div class="contact-card">
                             <div class="contact-icon">📞</div>
                             <h3>Téléphone</h3>
                             <p>Du lundi au vendredi, 9h-18h</p>
-                            <a href="#" class="btn">01 23 45 67 89</a>
+                            <a href="#" class="btn">0600131415</a>
                         </div>
                     </div>
                 </section>

@@ -1,9 +1,28 @@
 <!DOCTYPE html>
 <html lang="fr">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair Display:wght@500;700&display=swap" rel="stylesheet">
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>ASW</span>
+            </div>
+            <div class="nav-links">
+                <a href="Acceuil/accueil.html">Accueil</a>
+                <a href="analyse.html">Analyser</a>
+                <a href="page.html">Centre de Cybersécurité</a>
+                <a href="help.html">Centre d'aide</a>
+                <a href="about.html" class="active">A propos</a>
+            </div>
+        </nav>
+    </header>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>À propos de nous - ASW</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style/global.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair Display:wght@500;700&display=swap" rel="stylesheet">
     <style>
         /* Variables de couleurs */
         :root {
@@ -20,7 +39,7 @@
         }
         
         body {
-            font-family:'Playfair Display', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--light-grey);
@@ -35,7 +54,7 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         
-        nav {
+        .navbar {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
@@ -53,11 +72,6 @@
             align-items: center;
         }
         
-        .logo-icon {
-            margin-right: 10px;
-            font-size: 2rem;
-        }
-        
         .nav-links {
             display: flex;
             gap: 2rem;
@@ -70,7 +84,7 @@
             transition: all 0.3s ease;
         }
         
-        .nav-links a:hover {
+        .nav-links a:hover, .nav-links a.active {
             color: var(--light-blue);
         }
         
@@ -81,7 +95,7 @@
         }
         
         h1 {
-            color: var(--dark-blue);
+            color: var(--light-blue);
             margin-bottom: 2rem;
             text-align: center;
             font-size: 2.5rem;
@@ -89,7 +103,7 @@
         
         .about-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 3rem;
             margin-bottom: 4rem;
         }
@@ -105,21 +119,6 @@
             padding: 2.5rem;
             border-radius: 10px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-        }
-        
-        .about-image {
-            background-color: var(--light-blue);
-            border-radius: 10px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-        }
-        
-        .about-image img {
-            width: 100%;
-            height: auto;
         }
         
         h2 {
@@ -340,21 +339,6 @@
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="#" class="logo">
-                <span class="logo-icon">🛡️</span>
-                ASW
-            </a>
-            <div class="nav-links">
-                <a href="#">Accueil</a>
-                <a href="#">Services</a>
-                <a href="#" class="active">À propos</a>
-                <a href="#">Contact</a>
-            </div>
-        </nav>
-    </header>
-
     <main>
         <h1>À propos de ASW</h1>
         
@@ -371,10 +355,6 @@
                 
                 <h2>Ce qui nous distingue</h2>
                 <p>Contrairement aux solutions traditionnelles, ASW ne se contente pas de comparer les URL à des listes noires existantes. Notre technologie analyse en profondeur la structure du site, son code source et ses mécanismes d'interaction pour détecter en temps réel de nombreuses vulnérabilités, même celles qui n'ont jamais été signalées auparavant.</p>
-            </div>
-            
-            <div class="about-image">
-                <img src="/api/placeholder/600/400" alt="Analyse de sécurité ASW en action" />
             </div>
         </div>
         
