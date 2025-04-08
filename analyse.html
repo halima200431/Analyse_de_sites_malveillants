@@ -239,10 +239,12 @@
             
             progressValue.textContent = `${score}%`;
             
-            // Changer la couleur en fonction du score
-            let scoreColor = '#4CAF50'; // Vert par défaut
-            if (score < 40) scoreColor = '#F44336'; // Rouge
-            else if (score < 70) scoreColor = '#FFC107'; // Jaune
+            let scoreColor;
+            if (score >= 90) scoreColor = '#4CAF50';
+            else if (score >= 70) scoreColor = '#8BC34A';
+            else if (score >= 50) scoreColor = '#FFC107';
+            else if (score >= 30) scoreColor = '#FF9800';
+            else scoreColor = '#F44336';
             
             circularProgress.style.background = `conic-gradient(${scoreColor} ${score * 3.6}deg, #e0e0e0 0deg)`;
             
@@ -271,22 +273,21 @@
                     riskClass = 'malicious';
                     riskText.innerHTML = '<i class="fas fa-skull-crossbones"></i> Niveau de risque: Malveillant';
                     break;
+                default:
+                    riskClass = '';
+                    riskText.innerHTML = '<i class="fas fa-question-circle"></i> Niveau de risque: Inconnu';
             }
             
             riskLevel.classList.add(riskClass);
             
-            // Afficher tous les résultats horizontalement
+            // Affichage des résultats
             let findingsHTML = '';
-            
-            // 1. Google Safe Browsing
             findingsHTML += `
                 <div class="finding ${data.findings.safe_browsing ? 'danger' : 'success'}">
                     <i class="fas ${data.findings.safe_browsing ? 'fa-times-circle' : 'fa-check-circle'}"></i>
                     <strong>Google Safe Browsing:</strong> ${data.findings.safe_browsing ? 'Dangereux' : 'Sécurisé'}
                 </div>
             `;
-            
-            // 2. Score de menace
             findingsHTML += `
                 <div class="finding info">
                     <i class="fas fa-chart-line"></i>
@@ -294,8 +295,6 @@
                     ${data.threat_score > 2 ? '<span class="warning">(Élevé)</span>' : '<span class="success">(Acceptable)</span>'}
                 </div>
             `;
-            
-            // 3. Motifs suspects
             findingsHTML += `
                 <div class="finding ${data.findings.suspicious_patterns.length ? 'warning' : 'success'}">
                     <i class="fas ${data.findings.suspicious_patterns.length ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i>
@@ -303,8 +302,6 @@
                     ${data.findings.suspicious_patterns.length ? data.findings.suspicious_patterns.join(', ') : 'Aucun détecté'}
                 </div>
             `;
-            
-            // 4. Injection SQL
             findingsHTML += `
                 <div class="finding ${data.findings.sql_injection.length ? 'danger' : 'success'}">
                     <i class="fas ${data.findings.sql_injection.length ? 'fa-database' : 'fa-check-circle'}"></i>
@@ -312,8 +309,6 @@
                     ${data.findings.sql_injection.length ? data.findings.sql_injection.join(', ') : 'Aucune détectée'}
                 </div>
             `;
-            
-            // 5. Vulnérabilités XSS
             findingsHTML += `
                 <div class="finding ${data.findings.xss.length ? 'danger' : 'success'}">
                     <i class="fas ${data.findings.xss.length ? 'fa-code' : 'fa-check-circle'}"></i>
@@ -321,19 +316,20 @@
                     ${data.findings.xss.length ? data.findings.xss.join(', ') : 'Aucune détectée'}
                 </div>
             `;
-            
-            // 6. Certificat SSL (si disponible)
-            if(data.findings.ssl) {
+            if (data.findings.ssl) {
+                const isSslSuccess = data.findings.ssl.every(finding => 
+                    finding.includes("validated successfully") || 
+                    finding.includes("valid SCTs") || 
+                    finding.includes("No SSL/TLS issues detected")
+                );
                 findingsHTML += `
-                    <div class="finding ${data.findings.ssl.length ? 'warning' : 'success'}">
-                        <i class="fas ${data.findings.ssl.length ? 'fa-unlock' : 'fa-lock'}"></i>
+                    <div class="finding ${isSslSuccess && data.findings.ssl.length > 0 ? 'success' : 'warning'}">
+                        <i class="fas ${isSslSuccess && data.findings.ssl.length > 0 ? 'fa-lock' : 'fa-unlock'}"></i>
                         <strong>Certificat SSL:</strong>
                         ${data.findings.ssl.length ? data.findings.ssl.join(', ') : 'Valide et sécurisé'}
                     </div>
                 `;
             }
-            
-            // 7. Enregistrements DNS
             findingsHTML += `
                 <div class="finding ${data.findings.dns.length ? 'warning' : 'success'}">
                     <i class="fas ${data.findings.dns.length ? 'fa-globe' : 'fa-check-circle'}"></i>
@@ -344,13 +340,13 @@
 
             findingsContainer.innerHTML = findingsHTML;
             document.getElementById('results').style.display = 'block';
-        }
-    </script>
-</body>
+            }
+        </script>
+    </body>
 
-<footer>
-    <div class="footer-bottom">
-        <p>&copy; 2025 ASW. Tous droits réservés.</p>
-    </div>
-</footer>
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2025 ASW. Tous droits réservés.</p>
+        </div>
+    </footer>
 </html>
