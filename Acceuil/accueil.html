@@ -6,41 +6,46 @@
     <title>Détecteur de sites malveillants</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style/global.css">
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar">
-        <div class="logo">
-            <i class="fas fa-shield-alt"></i>
-            <span>ASW</span>
-        </div>
-        <div class="nav-links">
-            <a href="#" class="active">Accueil</a>
-            <a href="#features">Fonctionnalités</a>
-            <a href="#about">À propos</a>
-            <a href="#contact">Contact</a>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="hero">
-        <h1>Protégez-vous des sites malveillants</h1>
-        <p>Analyse automatique de différents aspects</p>
-        <p>Service en ligne 100 % gratuit</p>
-        <button class="cta-button">Commencer</button>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>ASW</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" >Accueil</a>
+                <a href="../analyse.html">Analyser</a>
+                <a href="../page.html">Centre de Cybersécurité</a>
+                <a href="../help.html">Centre d'aide</a>
+                <a href="../about.html">A propos</a>
+            </div>
+        </nav>
     </header>
 
-    <!-- URL Analysis Section -->
-    <section class="analysis-section">
-        <div class="url-input-container">
-            <input type="url" placeholder="Entrez l'URL du site à analyser..." id="urlInput">
-            <button class="analyze-button">Analyser</button>
+    <!-- Hero Section -->
+    <div class="hero">
+        <video autoplay muted loop>
+            <source src="accueilvd.mp4" type="video/mp4">
+            Votre navigateur ne supporte pas la lecture de vidéos.
+        </video>
+        <div class="hero-content">
+            <h1>Protégez-vous contre les menaces en ligne</h1>
+            <div class="hero-text">
+                <p>Analyse automatique de différents aspects</p>
+                <p>Analysez, détectez et comprenez les sites malveillants en un seul clic.</p>
+            </div>
+            <a href="../analyse.html" class="cta-button">Commencer l'analyse</a>
         </div>
-    </section>
+    </div>
 
     <!-- Features Section -->
     <section class="features" id="features">
-        <h2>Pourquoi nous choisir ?</h2>
+        <h2>Pourquoi choisir ASW ?</h2>
         <div class="feature-cards">
             <div class="feature-card">
                 <i class="fas fa-lock"></i>
@@ -53,9 +58,9 @@
                 <p>Vérification approfondie de multiples aspects de sécurité</p>
             </div>
             <div class="feature-card">
-                <i class="fas fa-brain"></i>
-                <h3>IA Intelligente</h3>
-                <p>Algorithmes d'apprentissage automatique pour une détection précise</p>
+                <i class="fas fa-desktop"></i>
+                <h3>Compatible Partout</h3>
+                <p>Fonctionne sur tous les navigateurs et systèmes d'exploitation</p>
             </div>
         </div>
     </section>
@@ -65,19 +70,34 @@
         <h2>Tests appliqués</h2>
         <div class="test-items">
             <div class="test-item">
-                <i class="fas fa-cookie"></i>
-                <h3>Sécurisation des cookies</h3>
-                <p>Vérification des paramètres de sécurité des cookies</p>
+                <i class="fas fa-shield-alt"></i>
+                <h3>Google Safe Browsing</h3>
+                <p>Vérification de la réputation du site via l'API Google Safe Browsing pour détecter les menaces connues</p>
             </div>
             <div class="test-item">
-                <i class="fas fa-lock"></i>
-                <h3>Chiffrement SSL</h3>
-                <p>Analyse du certificat SSL et de sa validité</p>
+                <i class="fas fa-search"></i>
+                <h3>Motifs Suspects</h3>
+                <p>Analyse des modèles de code et de contenu suspects pouvant indiquer une activité malveillante</p>
+            </div>
+            <div class="test-item">
+                <i class="fas fa-database"></i>
+                <h3>Injection SQL</h3>
+                <p>Protection contre les tentatives d'injection SQL et les vulnérabilités de base de données</p>
             </div>
             <div class="test-item">
                 <i class="fas fa-code"></i>
-                <h3>Injection SQL</h3>
-                <p>Test de vulnérabilité aux injections SQL</p>
+                <h3>Vulnérabilités XSS</h3>
+                <p>Détection des failles de type Cross-Site Scripting pour prévenir les attaques côté client</p>
+            </div>
+            <div class="test-item">
+                <i class="fas fa-lock"></i>
+                <h3>Certificats SSL</h3>
+                <p>Validation des certificats de sécurité et vérification du chiffrement des communications</p>
+            </div>
+            <div class="test-item">
+                <i class="fas fa-network-wired"></i>
+                <h3>Enregistrement DNS</h3>
+                <p>Analyse des enregistrements DNS pour détecter les redirections malveillantes et les domaines suspects</p>
             </div>
         </div>
     </section>
@@ -100,27 +120,41 @@
             </div>
         </div>
         <div class="faq-button-container">
-            <button class="info-button">Plus d'info</button>
+            <a href="../help.html" class="info-button">Plus d'info</a>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
         <div class="footer-content">
-            <div class="footer-section">
-                <h4>Contact</h4>
-                <p><i class="fas fa-envelope"></i> contact@securedetect.com</p>
-                <p><i class="fab fa-twitter"></i> @SecureDetect</p>
+            <div class="footer-info">
+                <div class="footer-logo">🛡️ ASW</div>
+                <p>Votre outil essentiel pour vérifier la sécurité des sites web et vous protéger contre les menaces en ligne.</p>
             </div>
-            <div class="footer-section">
-                <h4>Liens rapides</h4>
-                <a href="#features">Fonctionnalités</a>
-                <a href="#about">À propos</a>
-                <a href="#contact">Contact</a>
+            
+            <div class="footer-links">
+                <h4>Entreprise</h4>
+                <ul>
+                    <li><a href="#">À propos</a></li>
+                    <li><a href="#">Carrières</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
             </div>
-            <div class="footer-section">
-                <p class="copyright"> 2025 Détecteur de sites web malveillants. Tous droits réservés.</p>
+            
+            <div class="footer-links">
+                <h4>Ressources</h4>
+                <ul>
+                    <li><a href="#">Centre d'aide</a></li>
+                    <li><a href="#">Base de connaissances</a></li>
+                    <li><a href="#">Politique de confidentialité</a></li>
+                    <li><a href="#">Conditions d'utilisation</a></li>
+                </ul>
             </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 ASW. Tous droits réservés.</p>
         </div>
     </footer>
 

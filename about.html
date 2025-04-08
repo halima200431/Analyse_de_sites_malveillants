@@ -1,15 +1,44 @@
 <!DOCTYPE html>
 <html lang="fr">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair Display:wght@500;700&display=swap" rel="stylesheet">
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>ASW</span>
+            </div>
+            <div class="nav-links">
+                <a href="Acceuil/accueil.html">Accueil</a>
+                <a href="analyse.html">Analyser</a>
+                <a href="page.html">Centre de Cybersécurité</a>
+                <a href="help.html">Centre d'aide</a>
+                <a href="about.html" class="active">A propos</a>
+            </div>
+        </nav>
+    </header>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>À propos de nous - ASW</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style/global.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair Display:wght@500;700&display=swap" rel="stylesheet">
     <style>
+        .team-section p {
+         color: #787878; /* Bleu secondaire */
+         /* Ou une autre couleur de votre choix */
+}
+        .features-section h2,
+        .team-section h2 {
+          color: #2a7fdb; /* exemple avec le bleu secondaire */
+         /* ou */
+         color: #ffffff; /* exemple avec une couleur orange */
+}
         /* Variables de couleurs */
         :root {
             --primary-blue: #0a192f; /* Bleu Navy */
             --secondary-blue: #2a7fdb;
-            --light-blue: #e6f2ff;
+            --light-blue: #a2bee2;
             --dark-blue: #03265b;
             --white: #ffffff;
             --light-grey: #f5f7fa;
@@ -20,7 +49,7 @@
         }
         
         body {
-            font-family:'Playfair Display', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--light-grey);
@@ -29,21 +58,26 @@
         }
         
         header {
-            background-color: var(--primary-blue);
-            color: var(--white);
-            padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+             background-color: var(--primary-blue);
+             color: var(--white);
+             padding: 1rem 0;
+             box-shadow: var(--shadow-md);
+             width: 100%;
+             position: relative;
+             z-index: 100;
         }
-        
-        nav {
+
+        .navbar {
+            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-sizing: border-box;
         }
-        
+
         .logo {
             font-size: 1.8rem;
             font-weight: bold;
@@ -51,29 +85,45 @@
             text-decoration: none;
             display: flex;
             align-items: center;
+            transition: transform 0.3s ease;
         }
-        
-        .logo-icon {
-            margin-right: 10px;
-            font-size: 2rem;
+
+        .logo:hover {
+            transform: translateX(5px);
         }
-        
+
         .nav-links {
             display: flex;
             gap: 2rem;
         }
-        
+
         .nav-links a {
             color: var(--white);
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
         }
-        
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #3396aa;
+            transition: width 0.3s ease;
+       }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
         .nav-links a:hover {
-            color: var(--light-blue);
+            color: #3396aa;
         }
-        
         main {
             max-width: 1200px;
             margin: 0 auto;
@@ -81,7 +131,7 @@
         }
         
         h1 {
-            color: var(--dark-blue);
+            color: var(--light-blue);
             margin-bottom: 2rem;
             text-align: center;
             font-size: 2.5rem;
@@ -89,7 +139,7 @@
         
         .about-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 3rem;
             margin-bottom: 4rem;
         }
@@ -105,21 +155,6 @@
             padding: 2.5rem;
             border-radius: 10px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-        }
-        
-        .about-image {
-            background-color: var(--light-blue);
-            border-radius: 10px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-        }
-        
-        .about-image img {
-            width: 100%;
-            height: auto;
         }
         
         h2 {
@@ -340,21 +375,6 @@
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="#" class="logo">
-                <span class="logo-icon">🛡️</span>
-                ASW
-            </a>
-            <div class="nav-links">
-                <a href="#">Accueil</a>
-                <a href="#">Services</a>
-                <a href="#" class="active">À propos</a>
-                <a href="#">Contact</a>
-            </div>
-        </nav>
-    </header>
-
     <main>
         <h1>À propos de ASW</h1>
         
@@ -371,10 +391,6 @@
                 
                 <h2>Ce qui nous distingue</h2>
                 <p>Contrairement aux solutions traditionnelles, ASW ne se contente pas de comparer les URL à des listes noires existantes. Notre technologie analyse en profondeur la structure du site, son code source et ses mécanismes d'interaction pour détecter en temps réel de nombreuses vulnérabilités, même celles qui n'ont jamais été signalées auparavant.</p>
-            </div>
-            
-            <div class="about-image">
-                <img src="/api/placeholder/600/400" alt="Analyse de sécurité ASW en action" />
             </div>
         </div>
         
@@ -442,7 +458,7 @@
                 </div>
                 
                 <div class="team-member">
-                    <h3>Ikram Laabooki</h3>
+                    <h3>Ikram Laabouki</h3>
                 </div>
             </div>
         </div>
@@ -450,7 +466,7 @@
         <div class="cta-section">
             <h2>Vérifiez la sécurité de vos sites dès maintenant</h2>
             <p>Rejoignez des millions d'utilisateurs qui font confiance à ASW pour analyser la sécurité de leurs sites web préférés.</p>
-            <a href="#" class="btn">Analyser un site gratuitement</a>
+            <a href="analyse.html" class="btn">Analyser un site gratuitement</a>
         </div>
     </main>
     

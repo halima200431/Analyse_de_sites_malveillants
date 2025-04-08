@@ -48,29 +48,29 @@ body {
 
 /* Navbar */
 .navbar {
-    background-color: var(--white);
-    padding: 1rem 5%;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: var(--shadow);
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
+    box-sizing: border-box;
+    
 }
 
 .logo {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    color: var(--white);
     font-size: 1.5rem;
     font-weight: bold;
-    color: var(--primary-color);
+    text-decoration: none;
 }
 
 .logo i {
-    font-size: 1.8rem;
+    color: var(--secondary-blue);
 }
 
 .nav-links {
@@ -79,102 +79,114 @@ body {
 }
 
 .nav-links a {
+    color: var(--white);
     text-decoration: none;
-    color: var(--text-color);
-    font-weight: 500;
-    transition: color 0.3s;
+    font-size: 1rem;
+    transition: color 0.3s ease;
 }
 
-.nav-links a:hover, .nav-links a.active {
-    color: var(--primary-color);
+.nav-links a:hover {
+    color: var(--gray-200);
+}
+
+.nav-links a.active {
+    color: var(--secondary-blue);
+    font-weight: 600;
 }
 
 /* Hero Section */
 .hero {
-    padding: 8rem 5% 4rem;
+    padding: 0;
     text-align: center;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    position: relative;
     color: var(--white);
-    min-height: 80vh;
+    height: 100vh;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    gap: 1.5rem;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.hero video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 0 20px;
 }
 
 .hero h1 {
     font-size: 3rem;
-    margin-bottom: 1rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.hero-text {
+    margin-bottom: 2rem;
 }
 
 .hero p {
     font-size: 1.2rem;
     opacity: 0.9;
+    margin-bottom: 0.5rem;
 }
 
 .cta-button {
-    background-color: var(--white);
-    color: var(--primary-color);
-    padding: 1rem 2rem;
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: #1e40af;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
     border: none;
-    border-radius: 0.5rem;
-    font-size: 1.1rem;
-    font-weight: bold;
+    border-radius: 30px;
     cursor: pointer;
-    transition: transform 0.3s;
-    margin-top: 2rem;
+    transition: all 0.3s ease;
 }
-
+  
 .cta-button:hover {
+    background-color: #16a085;
     transform: translateY(-2px);
 }
 
 /* Analysis Section */
 .analysis-section {
-    padding: 4rem 5%;
-    background-color: var(--light-bg);
-}
-
-.url-input-container {
-    max-width: 800px;
-    margin: 0 auto;
-    display: flex;
-    gap: 1rem;
-}
-
-.url-input-container input {
-    flex: 1;
-    padding: 1rem;
-    border: 2px solid var(--gray-300);
-    border-radius: 0.5rem;
-    font-size: 1rem;
-}
-
-.analyze-button {
-    background-color: var(--primary-color);
-    color: var(--white);
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 0.5rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.analyze-button:hover {
-    background-color: var(--secondary-color);
+    display: none;
 }
 
 /* Features Section */
 .features {
-    padding: 4rem 5%;
+    padding: 5rem 5%;
     text-align: center;
 }
 
 .features h2 {
+    text-align: center;
+    font-size: 2.5rem;
     margin-bottom: 3rem;
-    font-size: 2rem;
+    color: var(--white);
 }
 
 .feature-cards {
@@ -205,40 +217,74 @@ body {
 
 /* Tests Section */
 .tests-section {
-    padding: 4rem 5%;
+    padding: 5rem 5%;
     background-color: var(--light-bg);
+}
+
+.tests-section h2 {
     text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: var(--text-color);
 }
 
 .test-items {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
     max-width: 1200px;
-    margin: 2rem auto 0;
+    margin: 0 auto;
 }
 
 .test-item {
-    background-color: var(--white);
+    background: var(--white);
     padding: 2rem;
     border-radius: 1rem;
+    text-align: center;
     box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.test-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .test-item i {
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: var(--primary-color);
+    margin-bottom: 1.5rem;
+}
+
+.test-item h3 {
+    font-size: 1.3rem;
+    color: var(--text-color);
     margin-bottom: 1rem;
+}
+
+.test-item p {
+    color: var(--text-color);
+    opacity: 0.8;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .test-items {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
 }
 
 /* FAQ Section */
 .faq-section {
-    padding: 4rem 5%;
+    padding: 5rem 5% 3rem;
 }
 
 .faq-section h2 {
     text-align: center;
+    font-size: 2.5rem;
     margin-bottom: 3rem;
+    color: var(--white);
 }
 
 .faq-container {
@@ -247,7 +293,7 @@ body {
 }
 
 .faq-item {
-    background-color: var(--white);
+    background: var(--white);
     padding: 1.5rem;
     border-radius: 0.5rem;
     margin-bottom: 1rem;
@@ -255,8 +301,14 @@ body {
 }
 
 .faq-item h3 {
-    color: var(--primary-color);
+    font-size: 1.2rem;
     margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.faq-item p {
+    color: var(--text-color);
+    opacity: 0.8;
 }
 
 .faq-button-container {
@@ -269,10 +321,11 @@ body {
     color: white;
     border: none;
     padding: 12px 24px;
-    border-radius: 5px;
+    border-radius: 20px;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    text-decoration: none;
 }
 
 .info-button:hover {

@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair Display:wght@500;700&display=swap" rel="stylesheet">
     <title>Centre d'aide - ASW</title>
     <style>
         /* Variables de couleurs */
         :root {
             --primary-blue: #0a192f; /* Bleu Navy */
             --secondary-blue: #2a7fdb;
-            --light-blue: #e6f2ff;
+            --light-blue: #a2bee2;
             --dark-blue: #03265b;
             --white: #ffffff;
             --light-grey: #f5f7fa;
@@ -20,7 +21,7 @@
         }
         
         body {
-            font-family:'Playfair Display', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--light-grey);
@@ -29,23 +30,26 @@
         }
         
         header {
-            background-color: var(--primary-blue);
-            color: var(--white);
-            padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
+             background-color: var(--primary-blue);
+             color: var(--white);
+             padding: 1rem 0;
+             box-shadow: var(--shadow-md);
+             width: 100%;
+             position: relative;
+             z-index: 100;
         }
-        
-        nav {
-            font-family:'Playfair Display';
+
+        .navbar {
             width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 0 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-sizing: border-box;
         }
-        
+
         .logo {
             font-size: 1.8rem;
             font-weight: bold;
@@ -53,27 +57,44 @@
             text-decoration: none;
             display: flex;
             align-items: center;
+            transition: transform 0.3s ease;
         }
-        
-        .logo-icon {
-            margin-right: 10px;
-            font-size: 2rem;
+
+        .logo:hover {
+            transform: translateX(5px);
         }
-        
+
         .nav-links {
             display: flex;
             gap: 2rem;
         }
-        
+
         .nav-links a {
             color: var(--white);
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
         }
-        
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #3396aa;
+            transition: width 0.3s ease;
+       }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
         .nav-links a:hover {
-            color: var(--light-blue);
+            color: #3396aa;
         }
         
         main {
@@ -105,7 +126,7 @@
         }
         
         .help-sidebar {
-            background-color: var(--white);
+            background-color: #e0e4e9;
             padding: 2rem;
             border-radius: 10px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
@@ -146,33 +167,54 @@
         }
         
         .help-categories {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            width: 100%;
-        }
-        
-        .help-categories li {
-            margin-bottom: 0.5rem;
-            width: 100%;
-        }
-        
-        .help-categories a {
-            display: block;
-            padding: 0.8rem 1rem;
-            color: var(--dark-grey);
-            text-decoration: none;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        
-        .help-categories a:hover, .help-categories a.active {
-            background-color: var(--light-blue);
-            color: var(--primary-blue);
-        }
-        
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.help-categories li {
+    margin-bottom: 0.5rem;
+    width: 100%;
+}
+
+.help-categories a {
+    display: block;
+    padding: 0.8rem 1rem;
+    color: var(--dark-grey);
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.help-categories a:hover {
+    background-color: rgba(162, 190, 226, 0.2); /* Version très légère */
+}
+
+/* Style actif avec dégradé light blue */
+.help-categories a.active {
+    background: linear-gradient(135deg, rgba(162, 190, 226, 0.3), rgba(122, 176, 247, 0.5));
+    color: var(--primary-blue);
+    font-weight: 600;
+    border-left: 3px solid var(--light-blue);
+    padding-left: calc(1rem - 3px);
+}
+
+/* Effet de lumière optionnel */
+.help-categories a.active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(162, 190, 226, 0.4);
+    pointer-events: none;
+}
         h2 {
             color: var(--primary-blue);
             margin-top: 0;
@@ -391,16 +433,17 @@
 </head>
 <body>
     <header>
-        <nav>
-            <a href="#" class="logo">
-                <span class="logo-icon">🛡️</span>
-                ASW
-            </a>
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>ASW</span>
+            </div>
             <div class="nav-links">
-                <a href="#">Accueil</a>
-                <a href="#">Services</a>
-                <a href="#">À propos</a>
-                <a href="#" class="active">Aide</a>
+                <a href="Acceuil/accueil.html">Accueil</a>
+                <a href="analyse.html">Analyser</a>
+                <a href="page.html">Centre de Cybersécurité</a>
+                <a href="help.html">Centre d'aide</a>
+                <a href="about.html" class="active">A propos</a>
             </div>
         </nav>
     </header>
@@ -476,14 +519,6 @@
                 <section id="comprendre-resultats" class="help-section">
                     <h2>Comprendre les résultats d'analyse</h2>
                     <p>Une fois l'analyse terminée, notre outil vous présente un rapport détaillé sur la sécurité du site web. Voici comment interpréter les différentes sections du rapport.</p>
-                    
-                    <h3>Niveau de risque global</h3>
-                    <p>Notre système utilise un indicateur à code couleur pour évaluer le niveau de risque global du site :</p>
-                    <ul>
-                        <li><span style="color: var(--success-green); font-weight: bold;">Sécurisé</span> : Le site ne présente aucun risque détecté</li>
-                        <li><span style="color: orange; font-weight: bold;">Attention</span> : Le site présente quelques risques mineurs</li>
-                        <li><span style="color: var(--danger-red); font-weight: bold;">Dangereux</span> : Le site présente des risques graves de sécurité</li>
-                    </ul>
                     
                     <h3>Éléments analysés</h3>
                     <p>Notre rapport détaille plusieurs aspects de sécurité :</p>
@@ -626,14 +661,14 @@
                             <div class="contact-icon">📧</div>
                             <h3>Email</h3>
                             <p>Réponse sous 24 heures</p>
-                            <a href="#" class="btn">support@analyseurweb.fr</a>
+                            <a href="#" class="btn">aws@gmail.com</a>
                         </div>
                         
                         <div class="contact-card">
                             <div class="contact-icon">📞</div>
                             <h3>Téléphone</h3>
                             <p>Du lundi au vendredi, 9h-18h</p>
-                            <a href="#" class="btn">01 23 45 67 89</a>
+                            <a href="#" class="btn">0600131415</a>
                         </div>
                     </div>
                 </section>
@@ -683,5 +718,33 @@
             <p>&copy; 2025 ASW. Tous droits réservés.</p>
         </div>
     </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.help-section');
+            const links = document.querySelectorAll('.help-categories a');
+            
+            // Observer les sections visibles
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Retirer 'active' de tous les liens
+                        links.forEach(link => link.classList.remove('active'));
+                        
+                        // Trouver le lien correspondant et ajouter 'active'
+                        const id = entry.target.getAttribute('id');
+                        const matchingLink = document.querySelector(`.help-categories a[href="#${id}"]`);
+                        if (matchingLink) {
+                            matchingLink.classList.add('active');
+                        }
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            // Observer chaque section
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+        </script>
 </body>
 </html>
