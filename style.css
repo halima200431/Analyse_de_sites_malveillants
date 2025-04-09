@@ -51,8 +51,15 @@ header {
     transition: transform 0.3s ease;
 }
 
+
 .logo:hover {
     transform: translateX(5px);
+}
+
+.logo-icon {
+    margin-right: 10px;
+    font-size: 2rem;
+    animation: pulse 2s infinite;
 }
 
 .nav-links {
