@@ -19,7 +19,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Analyseur de Sécurité Web</title>
+        <title>Analyseur de Sécurité Web</title>    
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="style/global.css">
         <style>
@@ -148,6 +148,9 @@
             
             <!-- Affichage horizontal des résultats -->
             <div class="findings-grid" id="findings-container"></div>
+
+            <!-- Bouton de téléchargement PDF -->
+            <button id="download-pdf-btn" onclick="downloadPDF()" class="analyze-btn" style="margin-top: 20px;">Télécharger en PDF</button> 
         </div>
     </div>
     
@@ -341,7 +344,48 @@
             findingsContainer.innerHTML = findingsHTML;
             document.getElementById('results').style.display = 'block';
             }
+
+    function downloadPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Titre du document
+    doc.setFontSize(18);
+    doc.text("Rapport d'Analyse de Sécurité Web", 10, 20);
+
+    // Score de sécurité
+    const score = document.getElementById('progress-value').textContent;
+    doc.setFontSize(14);
+    doc.text(`Score de sécurité : ${score}`, 10, 40);
+
+    // Niveau de risque
+    const riskText = document.getElementById('risk-text').textContent;
+    doc.text(riskText, 10, 50);
+
+    // Résultats détaillés
+    doc.setFontSize(12);
+    let yPosition = 70;
+    const findings = document.getElementById('findings-container').getElementsByClassName('finding');
+    
+    for (let finding of findings) {
+        const text = finding.textContent.trim().replace(/\s+/g, ' ');
+        doc.text(text, 10, yPosition);
+        yPosition += 10; // Espacement entre chaque ligne
+        if (yPosition > 280) { // Si on atteint la fin de la page, ajouter une nouvelle page
+            doc.addPage();
+            yPosition = 20;
+        }
+    }
+
+    // Pied de page
+    doc.setFontSize(10);
+    doc.text("© 2025 ASW. Tous droits réservés.", 10, 290);
+
+    // Télécharger le PDF
+    doc.save("rapport_securite_web.pdf");
+}
         </script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     </body>
 
     <footer>
